@@ -2,6 +2,7 @@ package com.adam.justdo.ui.component.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,10 @@ import androidx.compose.ui.unit.dp
 import com.adam.justdo.R
 
 @Composable
-fun HomeTopBar(onClickSearch: () -> Unit) {
+fun HomeTopBar(
+    onProfilePictureClick: () -> Unit,
+    onClickSearch: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,7 +46,10 @@ fun HomeTopBar(onClickSearch: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Box(
                     modifier = Modifier
                         .size(36.dp)
@@ -50,20 +57,21 @@ fun HomeTopBar(onClickSearch: () -> Unit) {
                             shape = CircleShape,
                             color = Color.White
                         )
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .clickable { onProfilePictureClick() },
                 ) {
                     Image(
+                        modifier = Modifier.fillMaxSize(),
                         imageVector = ImageVector.vectorResource(id = R.drawable.baseline_person_24),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
                         alignment = Alignment.Center,
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 }
                 Text(
                     modifier = Modifier.padding(horizontal = 14.dp),
                     text = "Hi! John Doe",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
