@@ -1,4 +1,5 @@
 package com.adam.justdo.ui.navigation
 
-class Screen {
+sealed class Screen(var route: String) {
+    object Home : Screen("home_screen")
 }
