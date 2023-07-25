@@ -1,12 +1,22 @@
 package com.adam.justdo.ui.screen.home
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.adam.justdo.ui.component.TodoGroupButton
+import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.home.HomeBottomBar
 import com.adam.justdo.ui.component.home.HomeTopBar
 
@@ -22,6 +32,7 @@ fun HomeScreen() {
         },
         topBar = {
             HomeTopBar(
+                onProfilePictureClick = { /*TODO*/ },
                 onClickSearch = { /*TODO*/ }
             )
         }
@@ -31,8 +42,34 @@ fun HomeScreen() {
                 .padding(it)
                 .fillMaxWidth()
         ) {
-            Row {
-
+            Column {
+                TodoGroupButton(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    icon = Icons.Filled.Flag,
+                    iconTint = Color.Red.copy(alpha = 0.8f, green = 0.5f),
+                    title = "Important",
+                    todoCount = 1,
+                    onClick = { /*TODO*/ }
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 14.dp)
+                        .fillMaxHeight()
+                ) {
+                    Text(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        text = "Today",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Color.DarkGray.copy(alpha = 0.8f),
+                        fontWeight = FontWeight.Medium
+                    )
+                    TodoItemCard(
+                        title = "Title",
+                        importantIconOnClick = { /*TODO*/ },
+                        onCheckedBoxChange = { /*TODO*/ },
+                        todoItemOnClick = { /*TODO*/ },
+                    )
+                }
             }
         }
     }
