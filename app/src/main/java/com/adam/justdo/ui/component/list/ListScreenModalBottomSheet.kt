@@ -1,12 +1,10 @@
-package com.adam.justdo.ui.component.group
+package com.adam.justdo.ui.component.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,7 +30,6 @@ fun ListScreenModalBottomSheet(
     onDismissRequest: () -> Unit,
 ) {
     ModalBottomSheet(
-        windowInsets = WindowInsets.navigationBars,
         onDismissRequest = { onDismissRequest() }
     ) {
         val menuButtonList = listOf(
@@ -71,9 +68,11 @@ fun ListScreenModalBottomSheet(
                         }
                     } else {
                         Box(modifier = Modifier.clickable {
-                            when(it.id) {
+                            when (it.id) {
                                 "rm" -> { /*TODO*/ }
+
                                 "del" -> { /*TODO*/ }
+
                                 "deldn" -> { /*TODO*/ }
                             }
                         }) {
