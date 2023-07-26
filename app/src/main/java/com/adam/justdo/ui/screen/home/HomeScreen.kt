@@ -15,13 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.home.HomeBottomBar
 import com.adam.justdo.ui.component.home.HomeTopBar
+import com.adam.justdo.ui.navigation.Screen
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navHostController: NavHostController) {
     Scaffold(
         bottomBar = {
             HomeBottomBar(
@@ -49,7 +51,9 @@ fun HomeScreen() {
                     iconTint = Color.Red.copy(alpha = 0.8f, green = 0.5f),
                     title = "Important",
                     todoCount = 1,
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        navHostController.navigate(Screen.List.route)
+                    }
                 )
                 Column(
                     modifier = Modifier
@@ -65,7 +69,7 @@ fun HomeScreen() {
                     )
                     TodoItemCard(
                         title = "Title",
-                        importantIconOnClick = { /*TODO*/ },
+                        onImportantChecked = { /*TODO*/ },
                         onCheckedBoxChange = { /*TODO*/ },
                         todoItemOnClick = { /*TODO*/ },
                     )
