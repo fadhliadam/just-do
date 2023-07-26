@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoItemCard(
+    modifier: Modifier = Modifier,
     title: String,
     onImportantChecked: (Boolean) -> Unit,
     onCheckedBoxChange: (Boolean) -> Unit,
@@ -38,7 +39,7 @@ fun TodoItemCard(
     var importantChecked by remember { mutableStateOf(false) }
     var checkBoxChecked by remember { mutableStateOf(false) }
     Card(
-        modifier = Modifier.padding(vertical = 12.dp),
+        modifier = modifier,
         onClick = {
             todoItemOnClick()
         }
