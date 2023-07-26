@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,8 @@ import com.adam.justdo.ui.navigation.Screen
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
+    val listTodo = listOf('a','b','c')
+    val listState = rememberLazyListState()
     Scaffold(
         bottomBar = {
             HomeBottomBar(
@@ -67,12 +72,17 @@ fun HomeScreen(navHostController: NavHostController) {
                         color = Color.DarkGray.copy(alpha = 0.8f),
                         fontWeight = FontWeight.Medium
                     )
-                    TodoItemCard(
-                        title = "Title",
-                        onImportantChecked = { /*TODO*/ },
-                        onCheckedBoxChange = { /*TODO*/ },
-                        todoItemOnClick = { /*TODO*/ },
-                    )
+                    LazyColumn(state = listState) {
+                        itemsIndexed(items = listTodo) { index, item ->
+                            TodoItemCard(
+                                modifier = Modifier.padding(vertical = 4.dp),
+                                title = "Title",
+                                onImportantChecked = {},
+                                onCheckedBoxChange = {},
+                                todoItemOnClick = {}
+                            )
+                        }
+                    }
                 }
             }
         }
