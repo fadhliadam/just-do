@@ -45,14 +45,14 @@ fun TodoGroupButton(
                 Text(
                     modifier = Modifier.padding(horizontal = 14.dp),
                     text = title,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Medium
                 )
             }
             if (todoCount != 0) {
                 Text(
                     text = todoCount.toString(),
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
         }

@@ -13,7 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TodoItemCard(
     title: String,
-    importantIconOnClick: (Boolean) -> Unit,
+    onImportantChecked: (Boolean) -> Unit,
     onCheckedBoxChange: (Boolean) -> Unit,
     todoItemOnClick: () -> Unit,
 ) {
     var importantIcon by remember { mutableStateOf(Icons.Outlined.Flag) }
-    var importantIconClicked by remember { mutableStateOf(false) }
+    var importantChecked by remember { mutableStateOf(false) }
     var checkBoxChecked by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier.padding(vertical = 12.dp),
@@ -44,7 +44,9 @@ fun TodoItemCard(
         }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -59,23 +61,23 @@ fun TodoItemCard(
                 )
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }
-            IconButton(
-                onClick = {
-                    if (!importantIconClicked) {
-                        importantIcon = Icons.Filled.Flag
-                        importantIconClicked = true
+            IconToggleButton(
+                checked = importantChecked,
+                onCheckedChange = {
+                    importantChecked = it
+                    importantIcon = if (it) {
+                        Icons.Filled.Flag
                     } else {
-                        importantIcon = Icons.Outlined.Flag
-                        importantIconClicked = false
+                        Icons.Outlined.Flag
                     }
-                    importantIconOnClick(importantIconClicked)
+                    onImportantChecked(it)
                 }
             ) {
                 Icon(
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(28.dp),
                     imageVector = importantIcon,
                     tint = Color.Red.copy(alpha = 0.8f, green = 0.5f),
                     contentDescription = "today icon"

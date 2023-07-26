@@ -6,14 +6,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.ui.screen.home.HomeScreen
+import com.adam.justdo.ui.screen.list.ListScreen
 
 @Composable
 fun JustDoApp() {
-    val navHostController = rememberNavController()
+    val navController = rememberNavController()
     
-    NavHost(navController = navHostController, startDestination = Screen.Home.route ) {
+    NavHost(navController = navController, startDestination = Screen.Home.route ) {
         composable(route = Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+        composable(route = Screen.List.route) {
+            ListScreen(navController)
         }
     }
 }
