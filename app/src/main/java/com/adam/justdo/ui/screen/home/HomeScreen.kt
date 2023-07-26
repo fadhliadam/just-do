@@ -57,7 +57,7 @@ fun HomeScreen(navHostController: NavHostController) {
                     title = "Important",
                     todoCount = 1,
                     onClick = {
-                        navHostController.navigate(Screen.List.route)
+                        navHostController.navigate(Screen.Important.route)
                     }
                 )
                 Column(

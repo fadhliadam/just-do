@@ -16,8 +16,11 @@ fun JustDoApp() {
         composable(route = Screen.Home.route) {
             HomeScreen(navController)
         }
-        composable(route = Screen.List.route) {
-            ListScreen(navController)
+        composable(route = Screen.Important.route) {
+            ListScreen(
+                navHostController = navController,
+                isOptional = false
+            )
         }
     }
 }
