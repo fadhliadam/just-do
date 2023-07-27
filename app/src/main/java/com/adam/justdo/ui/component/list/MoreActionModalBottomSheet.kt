@@ -17,19 +17,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.adam.justdo.ui.navigation.ListType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreenModalBottomSheet(
-    isOptional: Boolean,
+fun MoreActionModalBottomSheet(
+    listType: ListType,
+    isListEmpty: Boolean,
     onDismissRequest: () -> Unit,
 ) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
+        sheetState = sheetState,
         onDismissRequest = { onDismissRequest() }
     ) {
         val menuButtonList = listOf(
@@ -38,14 +43,16 @@ fun ListScreenModalBottomSheet(
             MenuButtonItem("deldn", Icons.Default.Delete, Color.Red, "Delete all completed tasks")
         )
         LazyColumn(
+            modifier = Modifier.padding(bottom = 18.dp),
             content = {
                 items(menuButtonList) {
-                    if (!isOptional && it.id == "del") {
+                    if (listType != ListType.Optional && (it.id == "del" || it.id == "rm")) {
+                        val actionText = if (it.id == "del") "deleted" else "renamed"
                         Box {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 8.dp, horizontal = 14.dp),
+                                    .padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -60,26 +67,50 @@ fun ListScreenModalBottomSheet(
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "Default list can't be deleted",
+                                        text = "Default list can't be $actionText",
                                         color = Color.Gray
                                     )
                                 }
                             }
                         }
+                    } else if (isListEmpty && it.id == "deldn") {
+                        Box {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = it.icon,
+                                    contentDescription = "${it.title} icon",
+                                    tint = Color.Gray
+                                )
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 12.dp),
+                                    text = it.title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
                     } else {
                         Box(modifier = Modifier.clickable {
                             when (it.id) {
-                                "rm" -> { /*TODO*/ }
+                                "rm" -> { /*TODO*/
+                                }
 
-                                "del" -> { /*TODO*/ }
+                                "del" -> { /*TODO*/
+                                }
 
-                                "deldn" -> { /*TODO*/ }
+                                "deldn" -> { /*TODO*/
+                                }
                             }
                         }) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp),
+                                    .padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(

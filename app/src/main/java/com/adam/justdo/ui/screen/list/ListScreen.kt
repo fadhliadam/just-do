@@ -21,22 +21,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adam.justdo.ui.component.TodoItemCard
-import com.adam.justdo.ui.component.list.ListScreenModalBottomSheet
+import com.adam.justdo.ui.component.list.AddTaskModalBottomSheet
 import com.adam.justdo.ui.component.list.ListScreenTopBar
+import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
+import com.adam.justdo.ui.navigation.ListType
 
 @Composable
 fun ListScreen(
     navHostController: NavHostController,
-    isOptional: Boolean,
+    listName: String,
+    listType: ListType,
 ) {
     val listState = rememberLazyListState()
     val listTodo = listOf('a', 'b', 'c')
-    var isPressed by remember { mutableStateOf(false) }
+    var isMoreButtonPressed by remember { mutableStateOf(false) }
+    var isAddTaskButtonPressed by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             ListScreenTopBar(
                 navHostController = navHostController,
-                onClickMore = { isPressed = !isPressed },
+                listName = listName,
+                onClickMore = { isMoreButtonPressed = !isMoreButtonPressed },
             )
         }
     ) {
@@ -63,7 +68,7 @@ fun ListScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(24.dp),
-                onClick = { /*TODO*/ }
+                onClick = { isAddTaskButtonPressed = !isAddTaskButtonPressed }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -72,10 +77,16 @@ fun ListScreen(
             }
         }
     }
-    if (isPressed) {
-        ListScreenModalBottomSheet(
-            isOptional = isOptional,
-            onDismissRequest = { isPressed = false }
+    if (isMoreButtonPressed) {
+        MoreActionModalBottomSheet(
+            listType = listType,
+            isListEmpty = false,
+            onDismissRequest = { isMoreButtonPressed = false }
+        )
+    } else if (isAddTaskButtonPressed) {
+        AddTaskModalBottomSheet(
+            listType = listType,
+            onDismissRequest = { isAddTaskButtonPressed = false }
         )
     }
 }
