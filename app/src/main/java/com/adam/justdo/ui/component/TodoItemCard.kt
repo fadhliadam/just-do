@@ -62,7 +62,7 @@ fun TodoItemCard(
                 )
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             }
             IconToggleButton(

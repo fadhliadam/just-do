@@ -68,7 +68,7 @@ fun HomeScreen(navHostController: NavHostController) {
                     Text(
                         modifier = Modifier.padding(bottom = 8.dp),
                         text = "Today",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = Color.DarkGray.copy(alpha = 0.8f),
                         fontWeight = FontWeight.Medium
                     )

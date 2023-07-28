@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.adam.justdo.R
 
 @Composable
@@ -44,7 +45,7 @@ fun HomeTopBar(
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 18.dp)
+                .padding(horizontal = 14.dp, vertical = 8.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -55,7 +56,7 @@ fun HomeTopBar(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(28.dp)
                         .background(
                             shape = CircleShape,
                             color = Color.White
@@ -74,7 +75,7 @@ fun HomeTopBar(
                 Text(
                     modifier = Modifier.padding(horizontal = 14.dp),
                     text = "Hi! John Doe",
-                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
