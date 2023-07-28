@@ -1,6 +1,7 @@
 package com.adam.justdo.ui.component.list
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,8 +34,13 @@ fun MoreActionModalBottomSheet(
     onDismissRequest: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val containerColor =
+        if (!isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.background
+
     ModalBottomSheet(
+        containerColor = containerColor,
         sheetState = sheetState,
+        dragHandle = {},
         onDismissRequest = { onDismissRequest() }
     ) {
         val menuButtonList = listOf(
@@ -43,7 +49,7 @@ fun MoreActionModalBottomSheet(
             MenuButtonItem("deldn", Icons.Default.Delete, Color.Red, "Delete all completed tasks")
         )
         LazyColumn(
-            modifier = Modifier.padding(bottom = 18.dp),
+            modifier = Modifier.padding(vertical = 18.dp),
             content = {
                 items(menuButtonList) {
                     if (listType != ListType.Optional && (it.id == "del" || it.id == "rm")) {
@@ -52,7 +58,7 @@ fun MoreActionModalBottomSheet(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(12.dp),
+                                    .padding(vertical = 14.dp, horizontal = 18.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -63,7 +69,7 @@ fun MoreActionModalBottomSheet(
                                 Column(Modifier.padding(horizontal = 12.dp)) {
                                     Text(
                                         text = it.title,
-                                        style = MaterialTheme.typography.titleLarge,
+                                        style = MaterialTheme.typography.titleMedium,
                                         color = Color.Gray
                                     )
                                     Text(
@@ -78,7 +84,7 @@ fun MoreActionModalBottomSheet(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(12.dp),
+                                    .padding(vertical = 14.dp, horizontal = 18.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -89,7 +95,7 @@ fun MoreActionModalBottomSheet(
                                 Text(
                                     modifier = Modifier.padding(horizontal = 12.dp),
                                     text = it.title,
-                                    style = MaterialTheme.typography.titleLarge,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = Color.Gray
                                 )
                             }
@@ -110,7 +116,7 @@ fun MoreActionModalBottomSheet(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(12.dp),
+                                    .padding(vertical = 14.dp, horizontal = 18.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -121,7 +127,7 @@ fun MoreActionModalBottomSheet(
                                 Text(
                                     modifier = Modifier.padding(horizontal = 12.dp),
                                     text = it.title,
-                                    style = MaterialTheme.typography.titleLarge,
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                             }
                         }
