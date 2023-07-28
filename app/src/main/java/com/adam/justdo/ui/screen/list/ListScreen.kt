@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adam.justdo.ui.component.TodoItemCard
-import com.adam.justdo.ui.component.list.AddTaskModalBottomSheet
+import com.adam.justdo.ui.component.task.TaskModalBottomSheet
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.navigation.ListType
@@ -84,8 +84,7 @@ fun ListScreen(
             onDismissRequest = { isMoreButtonPressed = false }
         )
     } else if (isAddTaskButtonPressed) {
-        AddTaskModalBottomSheet(
-            listType = listType,
+        TaskModalBottomSheet(
             onDismissRequest = { isAddTaskButtonPressed = false }
         )
     }
