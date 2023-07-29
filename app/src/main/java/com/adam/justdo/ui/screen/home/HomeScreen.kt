@@ -14,6 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -74,11 +78,15 @@ fun HomeScreen(navHostController: NavHostController) {
                     )
                     LazyColumn(state = listState) {
                         itemsIndexed(items = listTodo) { index, item ->
+                            var importantTodoCheck by remember { mutableStateOf(false) }
+                            var todoItemCheck by remember { mutableStateOf(false) }
                             TodoItemCard(
                                 modifier = Modifier.padding(vertical = 4.dp),
                                 title = "Title",
-                                onImportantChecked = {},
-                                onCheckedBoxChange = {},
+                                importantChecked = importantTodoCheck,
+                                checkBoxChecked = todoItemCheck,
+                                onImportantChecked = {check -> importantTodoCheck = check},
+                                onCheckedBoxChange = {check -> todoItemCheck = check},
                                 todoItemOnClick = {}
                             )
                         }

@@ -55,12 +55,16 @@ fun ListScreen(
                 state = listState
             ) {
                 itemsIndexed(items = listTodo) { index, item ->
+                    var importantTodoCheck by remember { mutableStateOf(false) }
+                    var todoItemCheck by remember { mutableStateOf(false) }
                     TodoItemCard(
                         modifier = Modifier.padding(vertical = 4.dp),
-                        title = "title",
-                        onImportantChecked = { /*TODO*/ },
-                        onCheckedBoxChange = { /*TODO*/ },
-                        todoItemOnClick = { /*TODO*/ }
+                        title = "Title",
+                        importantChecked = importantTodoCheck,
+                        checkBoxChecked = todoItemCheck,
+                        onImportantChecked = {check -> importantTodoCheck = check},
+                        onCheckedBoxChange = {check -> todoItemCheck = check},
+                        todoItemOnClick = {}
                     )
                 }
             }
