@@ -6,26 +6,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.ElevatedAssistChip
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetDueDateButton(
-    date: LocalDate?,
+    modifier: Modifier = Modifier,
+    selected: Boolean,
+    dateFormatted: String?,
     onClickTrailingIcon: () -> Unit,
     onClick: () -> Unit,
 ) {
-    val dateFormat =
-        if (date?.year == LocalDate.now().year) "E, MMM dd" else "E, MMM dd, yyyy"
-    val formattedDate = date?.format(DateTimeFormatter.ofPattern(dateFormat))
-    ElevatedAssistChip(
+    FilterChip(
+        modifier = modifier,
+        selected = selected,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Today,
@@ -33,7 +34,7 @@ fun SetDueDateButton(
             )
         },
         trailingIcon = {
-            if (date != null) {
+            if (!dateFormatted.isNullOrBlank()) {
                 Icon(
                     modifier = Modifier
                         .size(18.dp)
@@ -45,10 +46,10 @@ fun SetDueDateButton(
             }
         },
         label = {
-            if (formattedDate.isNullOrBlank()) {
+            if (dateFormatted.isNullOrBlank()) {
                 Text(text = "Set due date")
             } else {
-                Text(text = formattedDate)
+                Text(text = dateFormatted)
             }
         },
         onClick = { onClick() }
