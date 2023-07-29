@@ -1,21 +1,13 @@
 package com.adam.justdo.ui.component.task
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -29,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -46,7 +37,6 @@ fun TaskModalBottomSheet(
     onDismissRequest: () -> Unit,
 ) {
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    val dateFormat = selectedDate.toString()
     var openCalendarDialog by remember { mutableStateOf(false) }
     val focusRequester = FocusRequester()
     var taskTitle by remember { mutableStateOf("") }
@@ -87,13 +77,12 @@ fun TaskModalBottomSheet(
             maxLines = 8,
             textStyle = titleTextStyle,
             colors = textFieldColor,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-            keyboardActions = KeyboardActions(onSend = {
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
                 if (taskTitle.isNotBlank()) {
                     onDismissRequest()
                 }
             }),
-
             )
         TextField(
             modifier = Modifier
@@ -109,40 +98,17 @@ fun TaskModalBottomSheet(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            ElevatedAssistChip(
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.Today,
-                        contentDescription = "Due date icon"
-                    )
-                },
-                trailingIcon = {
-                    if (selectedDate != null) {
-                        Icon(
-                            modifier = Modifier
-                                .size(18.dp)
-                                .clip(RoundedCornerShape(30.dp))
-                                .clickable { selectedDate = null },
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = "cancel"
-                        )
-                    }
-                },
-                label = {
-                    if (selectedDate == null) {
-                        Text(text = "Set due date")
-                    } else {
-                        Text(text = dateFormat)
-                    }
-                },
-                onClick = { openCalendarDialog = true }
+            SetDueDateButton(
+                date = selectedDate,
+                onClickTrailingIcon = { selectedDate = null },
+                onClick = {openCalendarDialog = true},
             )
         }
     }
 
     if (openCalendarDialog) {
         SetDueDateDialog(
-            selectedDate = selectedDate,
+            date = selectedDate,
             onDone = { selectedDate = it },
             onDismissRequest = { openCalendarDialog = false }
         )

@@ -28,12 +28,12 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetDueDateDialog(
-    selectedDate: LocalDate?,
+    date: LocalDate?,
     onDone: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    var date by remember { mutableStateOf(LocalDate.now()) }
-    if (selectedDate != null) date = selectedDate
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+    if (date != null) selectedDate = date
     val useCaseState = rememberUseCaseState(visible = true)
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Surface(Modifier.clip(RoundedCornerShape(20.dp))) {
@@ -42,8 +42,8 @@ fun SetDueDateDialog(
                     useCaseState = useCaseState,
                     selection = CalendarSelection.Date(
                         withButtonView = false,
-                        selectedDate = date,
-                    ) { newDate -> date = newDate },
+                        selectedDate = selectedDate,
+                    ) { newDate -> selectedDate = newDate },
                     config = CalendarConfig(
                         yearSelection = true,
                         monthSelection = true,
@@ -59,7 +59,7 @@ fun SetDueDateDialog(
                         Text(text = "Cancel")
                     }
                     TextButton(onClick = {
-                        onDone(date)
+                        onDone(selectedDate)
                         onDismissRequest()
                     }) {
                         Text(text = "Done")
