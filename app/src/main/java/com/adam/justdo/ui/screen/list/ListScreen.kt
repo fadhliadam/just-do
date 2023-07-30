@@ -56,15 +56,17 @@ fun ListScreen(
                 state = listState
             ) {
                 itemsIndexed(items = listTaskDummy) { index, item ->
+                    var isImportant by remember { mutableStateOf(item.isImportant) }
+                    var isCompleted by remember { mutableStateOf(item.isCompleted) }
                     TodoItemCard(
                         modifier = Modifier.padding(vertical = 4.dp),
                         title = item.title,
                         description = item.description,
                         dueDate = item.dueDate,
-                        importantChecked = item.isImportant,
-                        checkBoxChecked = item.isCompleted,
-                        onImportantChecked = { check -> item.isImportant = check },
-                        onCheckedBoxChange = { check -> item.isCompleted = check },
+                        importantChecked = isImportant,
+                        checkBoxChecked = isCompleted,
+                        onImportantChecked = { isImportant = !isImportant },
+                        onCheckedBoxChange = { isCompleted = !isCompleted },
                         todoItemOnClick = {},
                     )
                 }

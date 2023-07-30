@@ -44,8 +44,7 @@ fun HomeScreen(navHostController: NavHostController) {
         },
         topBar = {
             HomeTopBar(
-                onProfilePictureClick = { /*TODO*/ },
-                onClickSearch = { /*TODO*/ }
+                onProfilePictureClick = { /*TODO*/ }
             )
         }
     ) {
