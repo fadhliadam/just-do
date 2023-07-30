@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adam.justdo.util.parseDate
@@ -89,7 +90,10 @@ fun TaskModalBottomSheet(
             maxLines = 8,
             textStyle = titleTextStyle,
             colors = textFieldColor,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.Sentences
+            ),
             keyboardActions = KeyboardActions(onDone = {
                 if (taskTitle.isNotBlank()) {
                     onDismissRequest()
@@ -102,6 +106,7 @@ fun TaskModalBottomSheet(
                 .padding(horizontal = 8.dp),
             value = taskDescription,
             onValueChange = { taskDescription = it },
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
             placeholder = { Text("Description") },
             colors = textFieldColor
         )

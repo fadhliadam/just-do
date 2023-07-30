@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.home.HomeBottomBar
@@ -31,8 +32,8 @@ import com.adam.justdo.ui.navigation.Screen
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
-    val listTodo = listOf('a','b','c')
     val listState = rememberLazyListState()
+    val listTaskDummy = remember { TaskDummy.taskDummy }
     Scaffold(
         bottomBar = {
             HomeBottomBar(
@@ -77,17 +78,19 @@ fun HomeScreen(navHostController: NavHostController) {
                         fontWeight = FontWeight.Medium
                     )
                     LazyColumn(state = listState) {
-                        itemsIndexed(items = listTodo) { index, item ->
-                            var importantTodoCheck by remember { mutableStateOf(false) }
-                            var todoItemCheck by remember { mutableStateOf(false) }
+                        itemsIndexed(items = listTaskDummy) { index, item ->
+                            var isImportant by remember { mutableStateOf(item.isImportant) }
+                            var isCompleted by remember { mutableStateOf(item.isCompleted) }
                             TodoItemCard(
                                 modifier = Modifier.padding(vertical = 4.dp),
-                                title = "Title",
-                                importantChecked = importantTodoCheck,
-                                checkBoxChecked = todoItemCheck,
-                                onImportantChecked = {check -> importantTodoCheck = check},
-                                onCheckedBoxChange = {check -> todoItemCheck = check},
-                                todoItemOnClick = {}
+                                title = item.title,
+                                description = item.description,
+                                dueDate = item.dueDate,
+                                importantChecked = isImportant,
+                                checkBoxChecked = isCompleted,
+                                onImportantChecked = { isImportant = !isImportant },
+                                onCheckedBoxChange = { isCompleted = !isCompleted },
+                                todoItemOnClick = {},
                             )
                         }
                     }

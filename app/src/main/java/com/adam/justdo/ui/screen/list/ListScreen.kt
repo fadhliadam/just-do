@@ -20,10 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoItemCard
-import com.adam.justdo.ui.component.task.TaskModalBottomSheet
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
+import com.adam.justdo.ui.component.task.TaskModalBottomSheet
 import com.adam.justdo.ui.navigation.ListType
 
 @Composable
@@ -33,7 +34,7 @@ fun ListScreen(
     listType: ListType,
 ) {
     val listState = rememberLazyListState()
-    val listTodo = listOf('a', 'b', 'c')
+    val listTaskDummy = remember { TaskDummy.taskDummy }
     var isMoreButtonPressed by remember { mutableStateOf(false) }
     var isAddTaskButtonPressed by remember { mutableStateOf(false) }
     Scaffold(
@@ -54,17 +55,17 @@ fun ListScreen(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
                 state = listState
             ) {
-                itemsIndexed(items = listTodo) { index, item ->
-                    var importantTodoCheck by remember { mutableStateOf(false) }
-                    var todoItemCheck by remember { mutableStateOf(false) }
+                itemsIndexed(items = listTaskDummy) { index, item ->
                     TodoItemCard(
                         modifier = Modifier.padding(vertical = 4.dp),
-                        title = "Title",
-                        importantChecked = importantTodoCheck,
-                        checkBoxChecked = todoItemCheck,
-                        onImportantChecked = {check -> importantTodoCheck = check},
-                        onCheckedBoxChange = {check -> todoItemCheck = check},
-                        todoItemOnClick = {}
+                        title = item.title,
+                        description = item.description,
+                        dueDate = item.dueDate,
+                        importantChecked = item.isImportant,
+                        checkBoxChecked = item.isCompleted,
+                        onImportantChecked = { check -> item.isImportant = check },
+                        onCheckedBoxChange = { check -> item.isCompleted = check },
+                        todoItemOnClick = {},
                     )
                 }
             }

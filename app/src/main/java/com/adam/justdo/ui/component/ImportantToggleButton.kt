@@ -24,14 +24,14 @@ fun ImportantToggleButton(
     IconToggleButton(
         checked = checked,
         onCheckedChange = {
-            importantIcon = if (it) {
-                Icons.Filled.Flag
-            } else {
-                Icons.Outlined.Flag
-            }
             onCheckedChange(it)
         }
     ) {
+        importantIcon = if (checked) {
+            Icons.Filled.Flag
+        } else {
+            Icons.Outlined.Flag
+        }
         Icon(
             modifier = Modifier.size(28.dp),
             imageVector = importantIcon,
