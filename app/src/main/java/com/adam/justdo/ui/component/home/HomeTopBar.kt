@@ -14,11 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,17 +30,17 @@ import com.adam.justdo.R
 
 @Composable
 fun HomeTopBar(
-    onProfilePictureClick: () -> Unit,
-    onClickSearch: () -> Unit
+    onProfilePictureClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.primary).windowInsetsPadding(WindowInsets.statusBars)
+            .background(color = MaterialTheme.colorScheme.primary)
+            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 8.dp)
+                .padding(horizontal = 14.dp, vertical = 12.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -77,20 +72,6 @@ fun HomeTopBar(
                     text = "Hi! John Doe",
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-            IconButton(
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                onClick = { onClickSearch() },
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .padding(2.dp),
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null
                 )
             }
         }
