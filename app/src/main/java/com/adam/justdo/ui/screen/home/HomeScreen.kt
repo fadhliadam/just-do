@@ -2,38 +2,26 @@ package com.adam.justdo.ui.screen.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoGroupButton
-import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.home.HomeBottomBar
 import com.adam.justdo.ui.component.home.HomeTopBar
+import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
+import com.adam.justdo.util.filterAndSortTask
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
-    val listState = rememberLazyListState()
-    val listTaskDummy = remember { TaskDummy.taskDummy }
     Scaffold(
         bottomBar = {
             HomeBottomBar(
@@ -55,45 +43,31 @@ fun HomeScreen(navHostController: NavHostController) {
         ) {
             Column {
                 TodoGroupButton(
-                    modifier = Modifier.padding(bottom = 8.dp),
                     icon = Icons.Filled.Flag,
-                    iconTint = Color.Red.copy(alpha = 0.8f, green = 0.5f),
+                    iconTint = MaterialTheme.colorScheme.tertiary,
                     title = "Important",
-                    todoCount = 1,
+                    todoCount = filterAndSortTask(
+                        ListType.Important,
+                        "Important",
+                        TaskDummy.taskDummy
+                    ).count(),
                     onClick = {
                         navHostController.navigate(Screen.Important.route)
                     }
                 )
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 14.dp)
-                        .fillMaxHeight()
-                ) {
-                    Text(
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        text = "Today",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.DarkGray.copy(alpha = 0.8f),
-                        fontWeight = FontWeight.Medium
-                    )
-                    LazyColumn(state = listState) {
-                        itemsIndexed(items = listTaskDummy) { index, item ->
-                            var isImportant by remember { mutableStateOf(item.isImportant) }
-                            var isCompleted by remember { mutableStateOf(item.isCompleted) }
-                            TodoItemCard(
-                                modifier = Modifier.padding(vertical = 4.dp),
-                                title = item.title,
-                                description = item.description,
-                                dueDate = item.dueDate,
-                                importantChecked = isImportant,
-                                checkBoxChecked = isCompleted,
-                                onImportantChecked = { isImportant = !isImportant },
-                                onCheckedBoxChange = { isCompleted = !isCompleted },
-                                todoItemOnClick = {},
-                            )
-                        }
+                TodoGroupButton(
+                    icon = Icons.Filled.Today,
+                    iconTint = MaterialTheme.colorScheme.secondary,
+                    title = "Today",
+                    todoCount = filterAndSortTask(
+                        ListType.Important,
+                        "Today",
+                        TaskDummy.taskDummy
+                    ).count(),
+                    onClick = {
+                        navHostController.navigate(Screen.Today.route)
                     }
-                }
+                )
             }
         }
     }

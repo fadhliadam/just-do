@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -26,6 +26,7 @@ import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.component.task.TaskModalBottomSheet
 import com.adam.justdo.ui.navigation.ListType
+import com.adam.justdo.util.filterAndSortTask
 
 @Composable
 fun ListScreen(
@@ -34,7 +35,7 @@ fun ListScreen(
     listType: ListType,
 ) {
     val listState = rememberLazyListState()
-    val listTaskDummy = remember { TaskDummy.taskDummy }
+    val listTaskDummy = remember { filterAndSortTask(listType, listName, TaskDummy.taskDummy) }
     var isMoreButtonPressed by remember { mutableStateOf(false) }
     var isAddTaskButtonPressed by remember { mutableStateOf(false) }
     Scaffold(
@@ -55,7 +56,7 @@ fun ListScreen(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
                 state = listState
             ) {
-                itemsIndexed(items = listTaskDummy) { index, item ->
+                items(listTaskDummy) { item ->
                     var isImportant by remember { mutableStateOf(item.isImportant) }
                     var isCompleted by remember { mutableStateOf(item.isCompleted) }
                     TodoItemCard(

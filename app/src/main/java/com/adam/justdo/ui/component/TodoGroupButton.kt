@@ -30,7 +30,7 @@ fun TodoGroupButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 18.dp, vertical = 18.dp),
+                .padding(horizontal = 18.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -38,7 +38,7 @@ fun TodoGroupButton(
                 Icon(
                     imageVector = icon,
                     tint = iconTint,
-                    contentDescription = "today icon"
+                    contentDescription = "Todo group icon"
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = 14.dp),
