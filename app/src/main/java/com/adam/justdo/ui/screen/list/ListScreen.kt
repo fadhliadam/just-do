@@ -89,7 +89,8 @@ fun ListScreen(
         )
     } else if (isAddTaskButtonPressed) {
         TaskModalBottomSheet(
-            onDismissRequest = { isAddTaskButtonPressed = false }
+            onDismissRequest = { isAddTaskButtonPressed = false },
+            onSave = { isAddTaskButtonPressed = false }
         )
     }
 }
