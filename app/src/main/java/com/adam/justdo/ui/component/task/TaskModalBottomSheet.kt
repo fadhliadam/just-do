@@ -3,6 +3,7 @@ package com.adam.justdo.ui.component.task
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -33,18 +35,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.adam.justdo.util.parseDate
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskModalBottomSheet(
     onDismissRequest: () -> Unit,
+    onSave: () -> Unit,
 ) {
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    val dateFormat =
-        if (selectedDate?.year == LocalDate.now().year) "E, MMM dd" else "E, MMM dd, yyyy"
-    val formattedDate = selectedDate?.format(DateTimeFormatter.ofPattern(dateFormat))
     var openCalendarDialog by remember { mutableStateOf(false) }
     var importantTodoCheck by remember { mutableStateOf(false) }
     var taskTitle by remember { mutableStateOf("") }
@@ -71,12 +71,12 @@ fun TaskModalBottomSheet(
     }
 
     ModalBottomSheet(
+        modifier = Modifier.imePadding(),
         containerColor = containerColor,
         dragHandle = {},
         onDismissRequest = {
             onDismissRequest()
         },
-        shape = MaterialTheme.shapes.medium,
     ) {
         TextField(
             modifier = Modifier
@@ -112,7 +112,7 @@ fun TaskModalBottomSheet(
             SetDueDateButton(
                 modifier = Modifier.padding(end = 8.dp),
                 selected = selectedDate != null,
-                dateFormatted = formattedDate,
+                dateFormatted = parseDate(selectedDate),
                 onClickTrailingIcon = { selectedDate = null },
                 onClick = { openCalendarDialog = true },
             )
@@ -129,6 +129,18 @@ fun TaskModalBottomSheet(
                     )
                 },
                 onClick = { importantTodoCheck = !importantTodoCheck },
+            )
+        }
+        TextButton(
+            modifier = Modifier
+                .padding(end = 14.dp, bottom = 4.dp)
+                .align(Alignment.End),
+            onClick = { onSave() }
+        ) {
+            Text(
+                text = "Save",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium
             )
         }
     }

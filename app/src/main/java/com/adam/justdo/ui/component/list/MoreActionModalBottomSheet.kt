@@ -37,17 +37,18 @@ fun MoreActionModalBottomSheet(
     val containerColor =
         if (!isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.background
 
+    val menuButtonList = listOf(
+        MenuButtonItem("rm", Icons.Default.Edit, Color.Blue, "Rename list"),
+        MenuButtonItem("del", Icons.Default.FolderDelete, Color.Red, "Delete list"),
+        MenuButtonItem("deldn", Icons.Default.Delete, Color.Red, "Delete all completed tasks")
+    )
+
     ModalBottomSheet(
         containerColor = containerColor,
         sheetState = sheetState,
         dragHandle = {},
         onDismissRequest = { onDismissRequest() }
     ) {
-        val menuButtonList = listOf(
-            MenuButtonItem("rm", Icons.Default.Edit, Color.Blue, "Rename list"),
-            MenuButtonItem("del", Icons.Default.FolderDelete, Color.Red, "Delete list"),
-            MenuButtonItem("deldn", Icons.Default.Delete, Color.Red, "Delete all completed tasks")
-        )
         LazyColumn(
             modifier = Modifier.padding(vertical = 18.dp),
             content = {
