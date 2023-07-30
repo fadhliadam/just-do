@@ -75,6 +75,7 @@ fun MoreActionModalBottomSheet(
                                     )
                                     Text(
                                         text = "Default list can't be $actionText",
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = Color.Gray
                                     )
                                 }

@@ -24,5 +24,12 @@ fun JustDoApp() {
                 listType = ListType.Important
             )
         }
+        composable(route = Screen.Today.route) {
+            ListScreen(
+                navHostController = navController,
+                listName = "Today",
+                listType = ListType.Important
+            )
+        }
     }
 }

@@ -6,13 +6,13 @@ import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -35,7 +35,7 @@ fun ImportantToggleButton(
         Icon(
             modifier = Modifier.size(28.dp),
             imageVector = importantIcon,
-            tint = Color.Red.copy(alpha = 0.8f, green = 0.5f),
+            tint = MaterialTheme.colorScheme.tertiary,
             contentDescription = "Important Icon Toggle"
         )
     }

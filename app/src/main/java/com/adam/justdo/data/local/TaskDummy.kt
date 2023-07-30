@@ -8,7 +8,7 @@ object TaskDummy {
         Task(
             title = "Lorem Ipsum",
             description = "",
-            dueDate = Date.valueOf("2023-07-30"),
+            dueDate = Date.valueOf("2023-07-31"),
             listGroup = "",
             isImportant = true,
             dateAdded = Date.valueOf("2023-07-30"),
@@ -17,7 +17,7 @@ object TaskDummy {
         Task(
             title = "Lorem Ipsum",
             description = "",
-            dueDate = Date.valueOf("2023-08-30"),
+            dueDate = Date.valueOf("2023-08-31"),
             listGroup = "",
             isImportant = true,
             dateAdded = Date.valueOf("2023-07-30"),
@@ -44,7 +44,7 @@ object TaskDummy {
         Task(
             title = "Lorem Ipsum",
             description = "",
-            dueDate = Date.valueOf("2023-07-30"),
+            dueDate = Date.valueOf("2023-07-31"),
             listGroup = "",
             isImportant = false,
             dateAdded = Date.valueOf("2023-07-30"),
@@ -53,7 +53,7 @@ object TaskDummy {
         Task(
             title = "Lorem Ipsum",
             description = "",
-            dueDate = Date.valueOf("2023-07-30"),
+            dueDate = Date.valueOf("2023-08-04"),
             listGroup = "",
             isImportant = true,
             dateAdded = Date.valueOf("2023-07-30"),
