@@ -38,7 +38,7 @@ fun TodoItemCard(
     onCheckedBoxChange: (Boolean) -> Unit,
     todoItemOnClick: () -> Unit,
 ) {
-    val formattedDate = parseDate(LocalDate.parse(dueDate.toString()))
+    val formattedDate = if(dueDate!=null) parseDate(LocalDate.parse(dueDate.toString())) else ""
     Card(
         modifier = modifier,
         onClick = {
