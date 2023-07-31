@@ -1,7 +1,7 @@
 package com.adam.justdo.ui.screen.list
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,6 +25,7 @@ import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.component.task.CreateTaskDialog
+import com.adam.justdo.ui.component.task.TaskDialog
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.util.filterAndSortTask
 
@@ -50,7 +51,7 @@ fun ListScreen(
         Box(
             modifier = Modifier
                 .padding(it)
-                .fillMaxHeight()
+                .fillMaxSize()
         ) {
             LazyColumn(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
@@ -59,6 +60,7 @@ fun ListScreen(
                 items(listTaskDummy) { item ->
                     var isImportant by remember { mutableStateOf(item.isImportant) }
                     var isCompleted by remember { mutableStateOf(item.isCompleted) }
+                    var openDialog by remember { mutableStateOf(false) }
                     TodoItemCard(
                         modifier = Modifier.padding(vertical = 4.dp),
                         title = item.title,
@@ -68,7 +70,16 @@ fun ListScreen(
                         checkBoxChecked = isCompleted,
                         onImportantChecked = { isImportant = !isImportant },
                         onCheckedBoxChange = { isCompleted = !isCompleted },
-                        todoItemOnClick = {},
+                        todoItemOnClick = {
+                            openDialog = true
+                        },
+                    )
+                    if (openDialog) TaskDialog(
+                        task = item,
+                        onDismissRequest = { openDialog = false },
+                        onDelete = { /*TODO*/ },
+                        onCancel = { openDialog = false },
+                        onSave = { openDialog = false },
                     )
                 }
             }
