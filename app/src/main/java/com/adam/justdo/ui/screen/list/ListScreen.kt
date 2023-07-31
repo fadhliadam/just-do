@@ -24,7 +24,7 @@ import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
-import com.adam.justdo.ui.component.task.TaskModalBottomSheet
+import com.adam.justdo.ui.component.task.CreateTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.util.filterAndSortTask
 
@@ -92,8 +92,10 @@ fun ListScreen(
             onDismissRequest = { isMoreButtonPressed = false }
         )
     } else if (isAddTaskButtonPressed) {
-        TaskModalBottomSheet(
+        CreateTaskDialog(
+            listName = listName,
             onDismissRequest = { isAddTaskButtonPressed = false },
+            onCancel = { isAddTaskButtonPressed = false },
             onSave = { isAddTaskButtonPressed = false }
         )
     }
