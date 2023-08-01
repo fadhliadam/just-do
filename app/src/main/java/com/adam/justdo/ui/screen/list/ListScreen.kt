@@ -18,10 +18,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.adam.justdo.R
 import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoItemCard
+import com.adam.justdo.ui.component.list.DeleteDialog
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.component.task.CreateTaskDialog
@@ -37,14 +40,15 @@ fun ListScreen(
 ) {
     val listState = rememberLazyListState()
     val listTaskDummy = remember { filterAndSortTask(listType, listName, TaskDummy.taskDummy) }
-    var isMoreButtonPressed by remember { mutableStateOf(false) }
-    var isAddTaskButtonPressed by remember { mutableStateOf(false) }
+    val listTaskCompleted = listTaskDummy.filter { it.isCompleted }
+    var openMoreBottomSheet by remember { mutableStateOf(false) }
+    var openAddTaskDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             ListScreenTopBar(
                 navHostController = navHostController,
                 listName = listName,
-                onClickMore = { isMoreButtonPressed = !isMoreButtonPressed },
+                onClickMore = { openMoreBottomSheet = !openMoreBottomSheet },
             )
         }
     ) {
@@ -61,6 +65,7 @@ fun ListScreen(
                     var isImportant by remember { mutableStateOf(item.isImportant) }
                     var isCompleted by remember { mutableStateOf(item.isCompleted) }
                     var openDialog by remember { mutableStateOf(false) }
+                    var openDeleteDialog by remember { mutableStateOf(false) }
                     TodoItemCard(
                         modifier = Modifier.padding(vertical = 4.dp),
                         title = item.title,
@@ -77,17 +82,25 @@ fun ListScreen(
                     if (openDialog) TaskDialog(
                         task = item,
                         onDismissRequest = { openDialog = false },
-                        onDelete = { /*TODO*/ },
+                        onDelete = { openDeleteDialog = !openDeleteDialog },
                         onCancel = { openDialog = false },
                         onSave = { openDialog = false },
                     )
+                    if (openDeleteDialog) {
+                        DeleteDialog(
+                            title = stringResource(R.string.delete_task),
+                            description = stringResource(R.string.delete_task_desc),
+                            onDelete = { /*TODO*/ },
+                            onDismissRequest = { openDeleteDialog = false }
+                        )
+                    }
                 }
             }
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(24.dp),
-                onClick = { isAddTaskButtonPressed = !isAddTaskButtonPressed }
+                onClick = { openAddTaskDialog = !openAddTaskDialog }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -96,19 +109,22 @@ fun ListScreen(
             }
         }
     }
-    if (isMoreButtonPressed) {
+    if (openMoreBottomSheet) {
         MoreActionModalBottomSheet(
             listName = listName,
             listType = listType,
-            isListEmpty = false,
-            onDismissRequest = { isMoreButtonPressed = false }
+            isListCompletedEmpty = listTaskCompleted.isEmpty(),
+            onRename = { /*TODO*/ },
+            onDeleteList = { /*TODO*/ },
+            onDeleteCompletedTask = { /*TODO*/ },
+            onDismissRequest = { openMoreBottomSheet = false }
         )
-    } else if (isAddTaskButtonPressed) {
+    } else if (openAddTaskDialog) {
         CreateTaskDialog(
             listName = listName,
-            onDismissRequest = { isAddTaskButtonPressed = false },
-            onCancel = { isAddTaskButtonPressed = false },
-            onSave = { isAddTaskButtonPressed = false }
+            onDismissRequest = { openAddTaskDialog = false },
+            onCancel = { openAddTaskDialog = false },
+            onSave = { openAddTaskDialog = false }
         )
     }
 }
