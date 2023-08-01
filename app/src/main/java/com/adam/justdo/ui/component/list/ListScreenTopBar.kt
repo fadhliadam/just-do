@@ -20,13 +20,13 @@ import androidx.navigation.NavHostController
 fun ListScreenTopBar(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    listName: String,
+    groupName: String,
     onClickMore: () -> Unit,
 ) {
     MediumTopAppBar(
         title = {
             Text(
-                text = listName,
+                text = groupName,
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold
             )

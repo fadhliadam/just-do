@@ -31,14 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun ListTaskDialog(
+fun GroupTaskDialog(
     value: String,
     onDismissRequest: () -> Unit,
     onCancel: () -> Unit,
     onSave: (String) -> Unit,
 ) {
     val focusRequest = remember { FocusRequester() }
-    var listName by remember { mutableStateOf(value) }
+    var groupName by remember { mutableStateOf(value) }
     var isError by remember { mutableStateOf(false) }
     val title = if (value.isBlank()) "Create new list" else "Rename list"
     val textFieldColor = TextFieldDefaults.colors(
@@ -70,14 +70,14 @@ fun ListTaskDialog(
                     modifier = Modifier
                         .height(100.dp)
                         .focusRequester(focusRequest),
-                    value = listName,
+                    value = groupName,
                     onValueChange = {
-                        if (it.length <= 50) listName = it
-                        isError = listName.count() >= 50
+                        if (it.length <= 50) groupName = it
+                        isError = groupName.count() >= 50
                     },
                     suffix = {
                         Text(
-                            text = "${listName.count()}/50",
+                            text = "${groupName.count()}/50",
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (isError) MaterialTheme.colorScheme.error else
                                 MaterialTheme.colorScheme.onSurface
@@ -91,7 +91,7 @@ fun ListTaskDialog(
                         )
                     },
                     keyboardActions = KeyboardActions(
-                        onDone = { onSave(listName) }
+                        onDone = { onSave(groupName) }
                     ),
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done,
@@ -107,8 +107,8 @@ fun ListTaskDialog(
                             Text(text = "Cancel")
                         }
                         TextButton(
-                            onClick = { onSave(listName) },
-                            enabled = listName.isNotBlank()
+                            onClick = { onSave(groupName) },
+                            enabled = groupName.isNotBlank()
                         ) {
                             Text(text = "Save")
                         }

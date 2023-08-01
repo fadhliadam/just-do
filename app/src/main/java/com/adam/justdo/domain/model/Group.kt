@@ -1,6 +1,6 @@
 package com.adam.justdo.domain.model
 
-data class ListName(
+data class Group(
     val id: Int,
-    var listName: String,
+    var groupName: String,
 )

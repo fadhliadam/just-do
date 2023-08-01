@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.adam.justdo.data.local.ListNameDummy
+import com.adam.justdo.data.local.GroupDummy
 import com.adam.justdo.data.local.TaskDummy
-import com.adam.justdo.ui.component.ListTaskDialog
+import com.adam.justdo.ui.component.GroupTaskDialog
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.home.HomeTopBar
 import com.adam.justdo.ui.navigation.ListType
@@ -40,9 +40,9 @@ import com.adam.justdo.util.filterAndSortTask
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
-    var openCreateListTask by remember { mutableStateOf(false) }
-    val listName = ListNameDummy.listName
-    var newListName by remember { mutableStateOf("") }
+    var openCreateGroupTask by remember { mutableStateOf(false) }
+    val listGroupName = GroupDummy.groups
+    var newGroupName by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
     Scaffold(
         topBar = {
@@ -94,18 +94,18 @@ fun HomeScreen(navHostController: NavHostController) {
                 )
                 Divider(thickness = 1.dp)
                 LazyColumn(state = listState) {
-                    items(listName) { item ->
+                    items(listGroupName) { item ->
                         TodoGroupButton(
                             icon = Icons.Filled.List,
                             iconTint = MaterialTheme.colorScheme.secondary,
-                            title = item.listName,
+                            title = item.groupName,
                             todoCount = filterAndSortTask(
                                 ListType.Optional,
-                                item.listName,
+                                item.groupName,
                                 TaskDummy.taskDummy
                             ).count{task -> !task.isCompleted},
                             onClick = {
-                                navHostController.navigate(item.listName)
+                                navHostController.navigate(item.groupName)
                             }
                         )
                     }
@@ -115,21 +115,21 @@ fun HomeScreen(navHostController: NavHostController) {
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(20.dp),
-                onClick = { openCreateListTask = !openCreateListTask }
+                onClick = { openCreateGroupTask = !openCreateGroupTask }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "New List")
                 Text(text = "New List")
             }
         }
     }
-    if (openCreateListTask) {
-        ListTaskDialog(
-            value = newListName,
-            onDismissRequest = { openCreateListTask = false },
-            onCancel = { openCreateListTask = false },
+    if (openCreateGroupTask) {
+        GroupTaskDialog(
+            value = newGroupName,
+            onDismissRequest = { openCreateGroupTask = false },
+            onCancel = { openCreateGroupTask = false },
             onSave = {
-                newListName = it
-                openCreateListTask = false
+                newGroupName = it
+                openCreateGroupTask = false
             },
         )
     }
