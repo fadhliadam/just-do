@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Just Do</string>
+    <string name="delete_task_desc">This will permanently delete this task and can\'t be undone.</string>
+    <string name="delete_task">Delete task</string>
+    <string name="delete_list">Delete list</string>
+    <string name="delete_list_desc_suffix">"will be permanently deleted"</string>
+    <string name="delete_all_completed_tasks">Delete all completed tasks</string>
+    <string name="delete_all_completed_desc">Completed tasks will be permanently deleted from this list.</string>
 </resources>

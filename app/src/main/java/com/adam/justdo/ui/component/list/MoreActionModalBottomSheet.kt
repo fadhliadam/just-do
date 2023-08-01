@@ -27,8 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.adam.justdo.ui.component.home.ListTaskDialog
+import com.adam.justdo.R
+import com.adam.justdo.ui.component.ListTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,11 +38,15 @@ import com.adam.justdo.ui.navigation.ListType
 fun MoreActionModalBottomSheet(
     listName: String,
     listType: ListType,
-    isListEmpty: Boolean,
+    isListCompletedEmpty: Boolean,
+    onRename: (String) -> Unit,
+    onDeleteList: () -> Unit,
+    onDeleteCompletedTask: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    var openCreateListTask by remember { mutableStateOf(false) }
-    var newListName by remember { mutableStateOf(listName) }
+    var openRenameListTask by remember { mutableStateOf(false) }
+    var openDeleteListDialog by remember { mutableStateOf(false) }
+    var openDeleteAllDialog by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val containerColor =
         if (!isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.background
@@ -89,7 +95,7 @@ fun MoreActionModalBottomSheet(
                                 }
                             }
                         }
-                    } else if (isListEmpty && it.id == "deldn") {
+                    } else if (isListCompletedEmpty && it.id == "deldn") {
                         Box {
                             Row(
                                 modifier = Modifier
@@ -114,13 +120,15 @@ fun MoreActionModalBottomSheet(
                         Box(modifier = Modifier.clickable {
                             when (it.id) {
                                 "rm" -> {
-                                    openCreateListTask = !openCreateListTask
+                                    openRenameListTask = !openRenameListTask
                                 }
 
-                                "del" -> { /*TODO*/
+                                "del" -> {
+                                    openDeleteListDialog = !openDeleteListDialog
                                 }
 
-                                "deldn" -> { /*TODO*/
+                                "deldn" -> {
+                                    openDeleteAllDialog = !openDeleteAllDialog
                                 }
                             }
                         }) {
@@ -146,15 +154,31 @@ fun MoreActionModalBottomSheet(
                 }
             }
         )
-        if (openCreateListTask) {
+        if (openRenameListTask) {
             ListTaskDialog(
-                value = newListName,
-                onDismissRequest = { openCreateListTask = false },
-                onCancel = { openCreateListTask = false },
+                value = listName,
+                onDismissRequest = { openRenameListTask = false },
+                onCancel = { openRenameListTask = false },
                 onSave = {
-                    newListName = it
-                    openCreateListTask = false
+                    onRename(it)
+                    openRenameListTask = false
                 },
+            )
+        }
+        if (openDeleteListDialog) {
+            DeleteDialog(
+                title = stringResource(R.string.delete_list),
+                description = "\"$listName\" ${stringResource(R.string.delete_list_desc_suffix)}",
+                onDelete = { onDeleteList() },
+                onDismissRequest = { openDeleteListDialog = false }
+            )
+        }
+        if (openDeleteAllDialog) {
+            DeleteDialog(
+                title = stringResource(R.string.delete_all_completed_tasks),
+                description = stringResource(R.string.delete_all_completed_desc),
+                onDelete = { onDeleteCompletedTask() },
+                onDismissRequest = { openDeleteAllDialog = false }
             )
         }
     }

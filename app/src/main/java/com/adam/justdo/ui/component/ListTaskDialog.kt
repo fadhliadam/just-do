@@ -1,4 +1,4 @@
-package com.adam.justdo.ui.component.home
+package com.adam.justdo.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,11 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
@@ -72,9 +70,9 @@ fun ListTaskDialog(
                     modifier = Modifier
                         .height(100.dp)
                         .focusRequester(focusRequest),
-                    value = TextFieldValue(text = listName, TextRange(title.length)),
+                    value = listName,
                     onValueChange = {
-                        if (it.text.length <= 50) listName = it.text
+                        if (it.length <= 50) listName = it
                         isError = listName.count() >= 50
                     },
                     suffix = {

@@ -33,7 +33,7 @@ import com.adam.justdo.data.local.ListNameDummy
 import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.home.HomeTopBar
-import com.adam.justdo.ui.component.home.ListTaskDialog
+import com.adam.justdo.ui.component.ListTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.util.filterAndSortTask
