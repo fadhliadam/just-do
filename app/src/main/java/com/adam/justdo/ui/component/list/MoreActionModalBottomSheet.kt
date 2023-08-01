@@ -20,19 +20,27 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.adam.justdo.ui.component.home.ListTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoreActionModalBottomSheet(
+    listName: String,
     listType: ListType,
     isListEmpty: Boolean,
     onDismissRequest: () -> Unit,
 ) {
+    var openCreateListTask by remember { mutableStateOf(false) }
+    var newListName by remember { mutableStateOf(listName) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val containerColor =
         if (!isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.background
@@ -105,7 +113,8 @@ fun MoreActionModalBottomSheet(
                     } else {
                         Box(modifier = Modifier.clickable {
                             when (it.id) {
-                                "rm" -> { /*TODO*/
+                                "rm" -> {
+                                    openCreateListTask = !openCreateListTask
                                 }
 
                                 "del" -> { /*TODO*/
@@ -137,5 +146,16 @@ fun MoreActionModalBottomSheet(
                 }
             }
         )
+        if (openCreateListTask) {
+            ListTaskDialog(
+                value = newListName,
+                onDismissRequest = { openCreateListTask = false },
+                onCancel = { openCreateListTask = false },
+                onSave = {
+                    newListName = it
+                    openCreateListTask = false
+                },
+            )
+        }
     }
 }

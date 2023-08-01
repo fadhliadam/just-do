@@ -98,6 +98,7 @@ fun ListScreen(
     }
     if (isMoreButtonPressed) {
         MoreActionModalBottomSheet(
+            listName = listName,
             listType = listType,
             isListEmpty = false,
             onDismissRequest = { isMoreButtonPressed = false }
