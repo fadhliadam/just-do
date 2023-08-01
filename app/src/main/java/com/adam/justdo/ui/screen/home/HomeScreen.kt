@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.adam.justdo.data.local.ListNameDummy
 import com.adam.justdo.data.local.TaskDummy
+import com.adam.justdo.ui.component.ListTaskDialog
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.home.HomeTopBar
-import com.adam.justdo.ui.component.ListTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.util.filterAndSortTask
@@ -61,7 +61,7 @@ fun HomeScreen(navHostController: NavHostController) {
                     icon = Icons.Filled.ListAlt,
                     iconTint = Color.Yellow.copy(green = 0.5f),
                     title = "All Tasks",
-                    todoCount = TaskDummy.taskDummy.count(),
+                    todoCount = TaskDummy.taskDummy.count { task -> !task.isCompleted },
                     onClick = {
                         navHostController.navigate(Screen.All.route)
                     }
@@ -74,7 +74,7 @@ fun HomeScreen(navHostController: NavHostController) {
                         ListType.Important,
                         "Important",
                         TaskDummy.taskDummy
-                    ).count(),
+                    ).count{task -> !task.isCompleted},
                     onClick = {
                         navHostController.navigate(Screen.Important.route)
                     }
@@ -87,7 +87,7 @@ fun HomeScreen(navHostController: NavHostController) {
                         ListType.Important,
                         "Today",
                         TaskDummy.taskDummy
-                    ).count(),
+                    ).count{task -> !task.isCompleted},
                     onClick = {
                         navHostController.navigate(Screen.Today.route)
                     }
@@ -103,7 +103,7 @@ fun HomeScreen(navHostController: NavHostController) {
                                 ListType.Optional,
                                 item.listName,
                                 TaskDummy.taskDummy
-                            ).count(),
+                            ).count{task -> !task.isCompleted},
                             onClick = {
                                 navHostController.navigate(item.listName)
                             }
