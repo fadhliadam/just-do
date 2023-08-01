@@ -32,8 +32,8 @@ import androidx.navigation.NavHostController
 import com.adam.justdo.data.local.ListNameDummy
 import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.ui.component.TodoGroupButton
-import com.adam.justdo.ui.component.home.CreateListTask
 import com.adam.justdo.ui.component.home.HomeTopBar
+import com.adam.justdo.ui.component.home.ListTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.util.filterAndSortTask
@@ -42,6 +42,7 @@ import com.adam.justdo.util.filterAndSortTask
 fun HomeScreen(navHostController: NavHostController) {
     var openCreateListTask by remember { mutableStateOf(false) }
     val listName = ListNameDummy.listName
+    var newListName by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
     Scaffold(
         topBar = {
@@ -93,7 +94,7 @@ fun HomeScreen(navHostController: NavHostController) {
                 )
                 Divider(thickness = 1.dp)
                 LazyColumn(state = listState) {
-                    items(listName) {item ->
+                    items(listName) { item ->
                         TodoGroupButton(
                             icon = Icons.Filled.List,
                             iconTint = MaterialTheme.colorScheme.secondary,
@@ -122,10 +123,14 @@ fun HomeScreen(navHostController: NavHostController) {
         }
     }
     if (openCreateListTask) {
-        CreateListTask(
+        ListTaskDialog(
+            value = newListName,
             onDismissRequest = { openCreateListTask = false },
             onCancel = { openCreateListTask = false },
-            onCreate = { openCreateListTask = false },
+            onSave = {
+                newListName = it
+                openCreateListTask = false
+            },
         )
     }
 }

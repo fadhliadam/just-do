@@ -24,21 +24,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun CreateListTask(
+fun ListTaskDialog(
+    value: String,
     onDismissRequest: () -> Unit,
     onCancel: () -> Unit,
-    onCreate: (String) -> Unit,
+    onSave: (String) -> Unit,
 ) {
     val focusRequest = remember { FocusRequester() }
-    var listName by remember { mutableStateOf("") }
+    var listName by remember { mutableStateOf(value) }
     var isError by remember { mutableStateOf(false) }
+    val title = if (value.isBlank()) "Create new list" else "Rename list"
     val textFieldColor = TextFieldDefaults.colors(
         unfocusedContainerColor = Color.LightGray.copy(0.4f),
         focusedContainerColor = Color.LightGray.copy(0.4f),
@@ -60,15 +64,17 @@ fun CreateListTask(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 14.dp, top = 8.dp),
-                    text = "Create new list",
+                    text = title,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleLarge
                 )
                 TextField(
-                    modifier = Modifier.height(100.dp).focusRequester(focusRequest),
-                    value = listName,
+                    modifier = Modifier
+                        .height(100.dp)
+                        .focusRequester(focusRequest),
+                    value = TextFieldValue(text = listName, TextRange(title.length)),
                     onValueChange = {
-                        if (it.length <= 50) listName = it
+                        if (it.text.length <= 50) listName = it.text
                         isError = listName.count() >= 50
                     },
                     suffix = {
@@ -87,7 +93,7 @@ fun CreateListTask(
                         )
                     },
                     keyboardActions = KeyboardActions(
-                        onDone = { onCreate(listName) }
+                        onDone = { onSave(listName) }
                     ),
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done,
@@ -103,10 +109,10 @@ fun CreateListTask(
                             Text(text = "Cancel")
                         }
                         TextButton(
-                            onClick = { onCreate(listName) },
+                            onClick = { onSave(listName) },
                             enabled = listName.isNotBlank()
                         ) {
-                            Text(text = "Create")
+                            Text(text = "Save")
                         }
                     }
                 }
