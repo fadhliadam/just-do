@@ -18,7 +18,7 @@ object TaskDummy {
             title = "Lorem Ipsum",
             description = "",
             dueDate = Date.valueOf("2023-08-31"),
-            listGroup = "",
+            listGroup = "Home",
             isImportant = true,
             dateAdded = Date.valueOf("2023-07-30"),
             isCompleted = false,

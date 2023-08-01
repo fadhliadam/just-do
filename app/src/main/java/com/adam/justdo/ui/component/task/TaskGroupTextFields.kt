@@ -74,7 +74,7 @@ fun TaskGroupTextFields(
         value = taskDescription,
         onValueChange = { onNoteChange(it) },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-        placeholder = { Text("add note") },
+        placeholder = { Text("add description") },
         colors = textFieldColor
     )
 }
