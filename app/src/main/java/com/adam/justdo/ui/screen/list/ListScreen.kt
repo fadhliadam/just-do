@@ -28,10 +28,10 @@ import com.adam.justdo.util.filterAndSortTask
 @Composable
 fun ListScreen(
     navHostController: NavHostController,
-    listName: String,
+    groupName: String,
     listType: ListType,
 ) {
-    val listTaskDummy = remember { filterAndSortTask(listType, listName, TaskDummy.taskDummy) }
+    val listTaskDummy = remember { filterAndSortTask(listType, groupName, TaskDummy.taskDummy) }
     val listTaskCompleted = listTaskDummy.filter { it.isCompleted }
     var openMoreBottomSheet by remember { mutableStateOf(false) }
     var openAddTaskDialog by remember { mutableStateOf(false) }
@@ -39,7 +39,7 @@ fun ListScreen(
         topBar = {
             ListScreenTopBar(
                 navHostController = navHostController,
-                listName = listName,
+                groupName = groupName,
                 onClickMore = { openMoreBottomSheet = !openMoreBottomSheet },
             )
         }
@@ -70,7 +70,7 @@ fun ListScreen(
     }
     if (openMoreBottomSheet) {
         MoreActionModalBottomSheet(
-            listName = listName,
+            listName = groupName,
             listType = listType,
             isListCompletedEmpty = listTaskCompleted.isEmpty(),
             onRename = { /*TODO*/ },
@@ -80,7 +80,7 @@ fun ListScreen(
         )
     } else if (openAddTaskDialog) {
         CreateTaskDialog(
-            listName = listName,
+            listName = groupName,
             onDismissRequest = { openAddTaskDialog = false },
             onCancel = { openAddTaskDialog = false },
             onSave = { openAddTaskDialog = false }

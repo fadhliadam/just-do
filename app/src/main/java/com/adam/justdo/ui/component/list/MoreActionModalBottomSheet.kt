@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adam.justdo.R
-import com.adam.justdo.ui.component.ListTaskDialog
+import com.adam.justdo.ui.component.GroupTaskDialog
 import com.adam.justdo.ui.navigation.ListType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -155,7 +155,7 @@ fun MoreActionModalBottomSheet(
             }
         )
         if (openRenameListTask) {
-            ListTaskDialog(
+            GroupTaskDialog(
                 value = listName,
                 onDismissRequest = { openRenameListTask = false },
                 onCancel = { openRenameListTask = false },

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.adam.justdo.data.local.ListNameDummy
+import com.adam.justdo.data.local.GroupDummy
 import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.ui.screen.home.HomeScreen
@@ -13,7 +13,7 @@ import com.adam.justdo.ui.screen.list.ListScreen
 @Composable
 fun JustDoApp() {
     val navController = rememberNavController()
-    val listName = ListNameDummy.listName
+    val listName = GroupDummy.groups
 
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
@@ -22,29 +22,29 @@ fun JustDoApp() {
         composable(route = Screen.Important.route) {
             ListScreen(
                 navHostController = navController,
-                listName = Screen.Important.route,
+                groupName = Screen.Important.route,
                 listType = ListType.Important
             )
         }
         composable(route = Screen.Today.route) {
             ListScreen(
                 navHostController = navController,
-                listName = Screen.Today.route,
+                groupName = Screen.Today.route,
                 listType = ListType.Important
             )
         }
         composable(route = Screen.All.route) {
             ListScreen(
                 navHostController = navController,
-                listName = Screen.All.route,
+                groupName = Screen.All.route,
                 listType = ListType.Important
             )
         }
         listName.forEach {item ->
-            composable(route = item.listName) {
+            composable(route = item.groupName) {
                 ListScreen(
                     navHostController = navController,
-                    listName = item.listName,
+                    groupName = item.groupName,
                     listType = ListType.Optional,
                 )
             }
