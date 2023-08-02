@@ -1,6 +1,6 @@
 package com.adam.justdo.util
 
-import com.adam.justdo.domain.model.Task
+import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.ui.navigation.ListType
 import java.time.LocalDate
 
@@ -14,6 +14,6 @@ fun filterAndSortTask(listType: ListType, listName: String, listTask: List<Task>
     } else if (listType == ListType.Important && listName == "All") {
         listTask
     } else {
-        listTask.filter { item -> item.listGroup == listName }
+        listTask.filter { item -> item.groupName == listName }
     }
 }

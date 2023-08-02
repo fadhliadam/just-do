@@ -19,7 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.adam.justdo.domain.model.Task
+import com.adam.justdo.data.local.entity.Task
 
 @Composable
 fun TaskGroupTextFields(

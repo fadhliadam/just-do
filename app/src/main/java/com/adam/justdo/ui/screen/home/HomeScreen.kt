@@ -20,6 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,9 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.adam.justdo.data.local.GroupDummy
 import com.adam.justdo.data.local.TaskDummy
+import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.ui.component.GroupTaskDialog
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.home.HomeTopBar
@@ -39,11 +42,25 @@ import com.adam.justdo.ui.navigation.Screen
 import com.adam.justdo.util.filterAndSortTask
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(
+    navHostController: NavHostController,
+    homeVM: HomeVM = hiltViewModel()
+) {
     var openCreateGroupTask by remember { mutableStateOf(false) }
-    val listGroupName = GroupDummy.groups
+    var listGroup by remember { mutableStateOf(emptyList<Group>()) }
+    val groupFlow = homeVM.groupFlow.collectAsState()
+
     var newGroupName by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        homeVM.getAllGroup()
+    }
+
+    groupFlow.value?.let {
+        listGroup = it
+    }
+
     Scaffold(
         topBar = {
             HomeTopBar(
@@ -74,7 +91,7 @@ fun HomeScreen(navHostController: NavHostController) {
                         ListType.Important,
                         "Important",
                         TaskDummy.taskDummy
-                    ).count{task -> !task.isCompleted},
+                    ).count { task -> !task.isCompleted },
                     onClick = {
                         navHostController.navigate(Screen.Important.route)
                     }
@@ -87,14 +104,14 @@ fun HomeScreen(navHostController: NavHostController) {
                         ListType.Important,
                         "Today",
                         TaskDummy.taskDummy
-                    ).count{task -> !task.isCompleted},
+                    ).count { task -> !task.isCompleted },
                     onClick = {
                         navHostController.navigate(Screen.Today.route)
                     }
                 )
                 Divider(thickness = 1.dp)
                 LazyColumn(state = listState) {
-                    items(listGroupName) { item ->
+                    items(listGroup) { item ->
                         TodoGroupButton(
                             icon = Icons.Filled.List,
                             iconTint = MaterialTheme.colorScheme.secondary,
@@ -103,7 +120,7 @@ fun HomeScreen(navHostController: NavHostController) {
                                 ListType.Optional,
                                 item.groupName,
                                 TaskDummy.taskDummy
-                            ).count{task -> !task.isCompleted},
+                            ).count { task -> !task.isCompleted },
                             onClick = {
                                 navHostController.navigate(item.groupName)
                             }
@@ -129,6 +146,9 @@ fun HomeScreen(navHostController: NavHostController) {
             onCancel = { openCreateGroupTask = false },
             onSave = {
                 newGroupName = it
+                homeVM.upsertGroup(
+                    Group(groupName = newGroupName)
+                )
                 openCreateGroupTask = false
             },
         )

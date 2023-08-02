@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.adam.justdo.util.parseDate
-import java.sql.Date
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,14 +30,14 @@ fun TodoItemCard(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    dueDate: Date?,
+    dueDate: String?,
     importantChecked: Boolean,
     checkBoxChecked: Boolean,
     onImportantChecked: (Boolean) -> Unit,
     onCheckedBoxChange: (Boolean) -> Unit,
     todoItemOnClick: () -> Unit,
 ) {
-    val formattedDate = if(dueDate!=null) parseDate(LocalDate.parse(dueDate.toString())) else ""
+    val formattedDate = if (dueDate != null) parseDate(LocalDate.parse(dueDate.toString())) else ""
     Card(
         modifier = modifier,
         onClick = {

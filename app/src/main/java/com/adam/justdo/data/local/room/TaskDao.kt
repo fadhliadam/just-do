@@ -5,27 +5,30 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.adam.justdo.data.local.entity.GroupEntity
-import com.adam.justdo.data.local.entity.TaskEntity
+import com.adam.justdo.data.local.entity.Group
+import com.adam.justdo.data.local.entity.Task
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM task")
-    fun getAllTask(): Flow<List<TaskEntity>>
+    fun getAllTask(): Flow<List<Task>>
 
-    @Query("SELECT * FROM `group`")
-    fun getAllGroupName(): Flow<List<GroupEntity>>
+    @Query("SELECT * FROM task where group_name = :groupName")
+    fun getTaskByGroupName(groupName: String): Flow<List<Task>>
+
+    @Query("SELECT * FROM groups")
+    fun getAllGroupName(): Flow<List<Group>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertTask(task: TaskEntity)
+    suspend fun upsertTask(task: Task)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertGroup(group: GroupEntity)
+    suspend fun upsertGroup(group: Group)
 
     @Delete
-    suspend fun deleteTask(task: TaskEntity)
+    suspend fun deleteTask(task: Task)
 
     @Delete
-    suspend fun deleteGroup(group: GroupEntity)
+    suspend fun deleteGroup(group: Group)
 }
