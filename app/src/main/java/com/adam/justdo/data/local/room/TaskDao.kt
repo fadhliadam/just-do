@@ -29,6 +29,12 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertGroup(group: Group)
 
+    @Query("UPDATE task SET is_important=:isImportant WHERE id = :id")
+    suspend fun updateImportant(id: Int, isImportant: Boolean)
+
+    @Query("UPDATE task SET is_completed=:isCompleted WHERE id = :id")
+    suspend fun updateCompleted(id: Int, isCompleted: Boolean)
+
     @Query("DELETE FROM task where group_name = :groupName")
     suspend fun deleteTaskByGroupName(groupName: String)
 

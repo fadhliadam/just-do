@@ -36,7 +36,7 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTaskDialog(
-    listName: String,
+    groupName: String,
     onDismissRequest: () -> Unit,
     onCancel: () -> Unit,
     onSave: (Task) -> Unit,
@@ -50,11 +50,10 @@ fun CreateTaskDialog(
     var taskDescription by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
     val task = Task(
-        id = 0,
         title = taskTitle,
         description = taskDescription,
         dueDate = parseSelectedDate,
-        groupName = listName,
+        groupName = groupName,
         isImportant = importantTodoCheck,
         isCompleted = false,
         dateAdded = LocalDateTime.now().toString(),
