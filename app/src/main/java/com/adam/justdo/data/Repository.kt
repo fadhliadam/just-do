@@ -17,12 +17,12 @@ class Repository @Inject constructor(
     override fun getTaskByGroupName(groupName: String): Flow<List<Task>> =
         taskDatabase.taskDao().getTaskByGroupName(groupName)
 
+    override fun getAllGroup(): Flow<List<Group>> = taskDatabase.taskDao().getAllGroup()
 
-    override fun getAllGroup(): Flow<List<Group>> = taskDatabase.taskDao().getAllGroupName()
-
+    override fun getGroupByName(groupName: String): Flow<List<Group>> =
+        taskDatabase.taskDao().getGroupByName(groupName)
 
     override suspend fun upsertTask(task: Task) = taskDatabase.taskDao().upsertTask(task)
-
 
     override suspend fun upsertGroup(group: Group) = taskDatabase.taskDao().upsertGroup(group)
 
@@ -31,7 +31,8 @@ class Repository @Inject constructor(
     }
 
     override suspend fun deleteGroup(group: Group) {
-        TODO("Not yet implemented")
+        taskDatabase.taskDao().deleteGroup(group)
+        taskDatabase.taskDao().deleteTaskByGroupName(group.groupName)
     }
 
 }

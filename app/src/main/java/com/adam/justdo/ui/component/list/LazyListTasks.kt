@@ -31,7 +31,7 @@ import com.adam.justdo.ui.component.task.TaskDialog
 
 @Composable
 fun LazyListTasks(
-    listTask: List<Task>,
+    listTaskNotCompleted: List<Task>,
     listTaskCompleted: List<Task>,
     onSaveEditTask: (Task) -> Unit,
     onDeleteTask: (Task) -> Unit,
@@ -39,7 +39,6 @@ fun LazyListTasks(
     val listState = rememberLazyListState()
     val interactionSource = MutableInteractionSource()
     var expandItem by remember { mutableStateOf(false) }
-    val listTaskNotCompleted = listTask.filter { !it.isCompleted }
 
     LazyColumn(
         modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),

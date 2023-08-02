@@ -49,7 +49,6 @@ fun HomeScreen(
     var openCreateGroupTask by remember { mutableStateOf(false) }
     var listGroup by remember { mutableStateOf(emptyList<Group>()) }
     val groupFlow = homeVM.groupFlow.collectAsState()
-
     var newGroupName by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
 

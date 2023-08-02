@@ -9,6 +9,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,23 +18,48 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.adam.justdo.data.local.TaskDummy
+import com.adam.justdo.data.local.entity.Group
+import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.ui.component.list.LazyListTasks
 import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.component.task.CreateTaskDialog
 import com.adam.justdo.ui.navigation.ListType
-import com.adam.justdo.util.filterAndSortTask
 
 @Composable
 fun ListScreen(
     navHostController: NavHostController,
     groupName: String,
     listType: ListType,
+    listVM: ListVM = hiltViewModel(),
 ) {
-    val listTaskDummy = remember { filterAndSortTask(listType, groupName, TaskDummy.taskDummy) }
-    val listTaskCompleted = listTaskDummy.filter { it.isCompleted }
+    var listTask by remember { mutableStateOf(emptyList<Task>()) }
+    var group: Group? by remember { mutableStateOf(null) }
+    val taskFlow = listVM.taskFlow.collectAsState()
+    val groupFlow = listVM.groupFlow.collectAsState()
+
+    LaunchedEffect(listVM.taskFlow) {
+        if (listType != ListType.Important) {
+            listVM.getTaskByGroupName(groupName)
+        } else {
+            listVM.getAllTasks()
+        }
+        listVM.getGroupByName(groupName)
+    }
+
+    taskFlow.value?.let {
+        listTask = it
+    }
+
+    groupFlow.value?.let {
+        if (it.isNotEmpty()) {
+            group = it.first()
+        }
+    }
+
+    val listTaskCompleted = listTask.filter { it.isCompleted }
     var openMoreBottomSheet by remember { mutableStateOf(false) }
     var openAddTaskDialog by remember { mutableStateOf(false) }
     Scaffold(
@@ -50,7 +77,7 @@ fun ListScreen(
                 .fillMaxSize()
         ) {
             LazyListTasks(
-                listTask = listTaskDummy,
+                listTaskNotCompleted = listTask.filter { item -> !item.isCompleted },
                 listTaskCompleted = listTaskCompleted,
                 onSaveEditTask = { /*TODO*/ },
                 onDeleteTask = { /*TODO*/ }
@@ -73,8 +100,15 @@ fun ListScreen(
             listName = groupName,
             listType = listType,
             isListCompletedEmpty = listTaskCompleted.isEmpty(),
-            onRename = { /*TODO*/ },
-            onDeleteList = { /*TODO*/ },
+            onRename = {
+                listVM.renameGroup(Group(group?.id, it))
+                openMoreBottomSheet = false
+            },
+            onDeleteList = {
+                listVM.deleteGroup(Group(group?.id, groupName))
+                openMoreBottomSheet = false
+                navHostController.popBackStack()
+            },
             onDeleteCompletedTask = { /*TODO*/ },
             onDismissRequest = { openMoreBottomSheet = false }
         )
