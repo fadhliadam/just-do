@@ -27,6 +27,7 @@ import com.adam.justdo.ui.component.list.ListScreenTopBar
 import com.adam.justdo.ui.component.list.MoreActionModalBottomSheet
 import com.adam.justdo.ui.component.task.CreateTaskDialog
 import com.adam.justdo.ui.navigation.ListType
+import java.time.LocalDate
 
 @Composable
 fun ListScreen(
@@ -41,12 +42,8 @@ fun ListScreen(
     var openAddTaskDialog by remember { mutableStateOf(false) }
     val taskFlow = listVM.taskFlow.collectAsState()
 
-    LaunchedEffect(listVM.taskFlow) {
-        if (listType != ListType.Important && group.id != null) {
-            listVM.getTaskByGroupId(group.id)
-        } else {
-            listVM.getAllTasks()
-        }
+    LaunchedEffect(Unit) {
+        getTaskFromDb(listType, group, listVM)
     }
 
     taskFlow.value?.let {
@@ -103,7 +100,10 @@ fun ListScreen(
                 openMoreBottomSheet = false
                 navHostController.popBackStack()
             },
-            onDeleteCompletedTask = { /*TODO*/ },
+            onDeleteCompletedTask = {
+                deleteCompleteTask(listType, group, listVM)
+                openMoreBottomSheet = false
+            },
             onDismissRequest = { openMoreBottomSheet = false }
         )
     } else if (openAddTaskDialog) {
@@ -127,6 +127,49 @@ fun ListScreen(
                     openAddTaskDialog = false
                 }
             )
+        }
+    }
+}
+
+fun getTaskFromDb(listType: ListType, group: Group, listVM: ListVM) {
+    if (listType != ListType.Important && group.id != null) {
+        listVM.getTaskByGroupId(group.id)
+    } else if (listType == ListType.Important) {
+        when (group.groupName) {
+            "Important" -> {
+                listVM.getTaskByImportantOrDueDate(1)
+            }
+
+            "Today" -> {
+                listVM.getTaskByImportantOrDueDate(dueDate = LocalDate.now().toString())
+            }
+
+            "All" -> {
+                listVM.getAllTasks()
+            }
+        }
+    }
+}
+
+fun deleteCompleteTask(listType: ListType, group: Group, listVM: ListVM) {
+    if (listType != ListType.Important) {
+        listVM.deleteCompletedAllOrByGroupId(group.id)
+    } else {
+        when (group.groupName) {
+            "Important" -> {
+                listVM.deleteCompletedImportantOrDueDate(1)
+            }
+
+            "Today" -> {
+                listVM.deleteCompletedImportantOrDueDate(
+                    0,
+                    LocalDate.now().toString()
+                )
+            }
+
+            "All" -> {
+                listVM.deleteCompletedAllOrByGroupId()
+            }
         }
     }
 }

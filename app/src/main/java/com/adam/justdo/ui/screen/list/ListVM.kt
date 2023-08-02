@@ -31,6 +31,13 @@ class ListVM @Inject constructor(
         }
     }
 
+    fun getTaskByImportantOrDueDate(isImportant: Int? = null, dueDate: String? = null) =
+        viewModelScope.launch {
+            useCase.getTaskByImportantOrDueDate(isImportant, dueDate).collect {
+                _taskFlow.value = it
+            }
+        }
+
     fun upsertTask(task: Task) = viewModelScope.launch {
         useCase.upsertTask(task)
     }
@@ -50,6 +57,15 @@ class ListVM @Inject constructor(
     fun deleteTask(task: Task) = viewModelScope.launch {
         useCase.deleteTask(task)
     }
+
+    fun deleteCompletedAllOrByGroupId(groupId: Int? = null) = viewModelScope.launch {
+        useCase.deleteCompletedAllOrByGroupId(groupId)
+    }
+
+    fun deleteCompletedImportantOrDueDate(isImportant: Int? = null, dueDate: String? = null) =
+        viewModelScope.launch {
+            useCase.deleteCompletedImportantOrDueDate(isImportant, dueDate)
+        }
 
     fun deleteGroup(group: Group) = viewModelScope.launch {
         useCase.deleteGroup(group)
