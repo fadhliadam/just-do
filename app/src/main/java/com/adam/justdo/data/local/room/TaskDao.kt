@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.adam.justdo.data.local.entity.Count
 import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.data.local.entity.Task
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +22,13 @@ interface TaskDao {
 
     @Query("SELECT * FROM groups")
     fun getAllGroup(): Flow<List<Group>>
+
+    @Query(
+        "SELECT COUNT(*) as all_count, " +
+                "SUM(CASE WHEN is_important = 1 THEN 1 ELSE 0 END) as important_count, " +
+                "COUNT(DATE(due_date) = DATE('now')) as today_count FROM task WHERE is_completed = 0"
+    )
+    fun getCount(): Flow<Count>
 
     @Upsert
     suspend fun upsertTask(task: Task)

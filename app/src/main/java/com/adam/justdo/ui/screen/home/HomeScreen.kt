@@ -32,14 +32,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.adam.justdo.data.local.TaskDummy
 import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.ui.component.GroupTaskDialog
 import com.adam.justdo.ui.component.TodoGroupButton
 import com.adam.justdo.ui.component.home.HomeTopBar
-import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.ui.navigation.Screen
-import com.adam.justdo.util.filterAndSortTask
 
 @Composable
 fun HomeScreen(
@@ -50,10 +47,12 @@ fun HomeScreen(
     var listGroup by remember { mutableStateOf(emptyList<Group>()) }
     val groupFlow = homeVM.groupFlow.collectAsState()
     var newGroupName by remember { mutableStateOf("") }
+    val countFlow = homeVM.countFlow.collectAsState()
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         homeVM.getAllGroup()
+        homeVM.getCount()
     }
 
     groupFlow.value?.let {
@@ -73,41 +72,39 @@ fun HomeScreen(
                 .fillMaxSize()
         ) {
             Column {
-                TodoGroupButton(
-                    icon = Icons.Filled.ListAlt,
-                    iconTint = Color.Yellow.copy(green = 0.5f),
-                    title = "All Tasks",
-                    todoCount = TaskDummy.taskDummy.count { task -> !task.isCompleted },
-                    onClick = {
-                        navHostController.navigate(Screen.All.route)
-                    }
-                )
-                TodoGroupButton(
-                    icon = Icons.Filled.Flag,
-                    iconTint = MaterialTheme.colorScheme.tertiary,
-                    title = "Important",
-                    todoCount = filterAndSortTask(
-                        ListType.Important,
-                        Group(null, "Important"),
-                        TaskDummy.taskDummy
-                    ).count { task -> !task.isCompleted },
-                    onClick = {
-                        navHostController.navigate(Screen.Important.route)
-                    }
-                )
-                TodoGroupButton(
-                    icon = Icons.Filled.Today,
-                    iconTint = MaterialTheme.colorScheme.secondary,
-                    title = "Today",
-                    todoCount = filterAndSortTask(
-                        ListType.Important,
-                        Group(null, "Today"),
-                        TaskDummy.taskDummy
-                    ).count { task -> !task.isCompleted },
-                    onClick = {
-                        navHostController.navigate(Screen.Today.route)
-                    }
-                )
+                countFlow.value?.let { value ->
+                    TodoGroupButton(
+                        icon = Icons.Filled.ListAlt,
+                        iconTint = Color.Yellow.copy(green = 0.5f),
+                        title = "All Tasks",
+                        todoCount = value.allCount,
+                        onClick = {
+                            navHostController.navigate(Screen.All.route)
+                        }
+                    )
+                }
+                countFlow.value?.let { value ->
+                    TodoGroupButton(
+                        icon = Icons.Filled.Flag,
+                        iconTint = MaterialTheme.colorScheme.tertiary,
+                        title = "Important",
+                        todoCount = value.importantCount,
+                        onClick = {
+                            navHostController.navigate(Screen.Important.route)
+                        }
+                    )
+                }
+                countFlow.value?.todayCount?.let { value ->
+                    TodoGroupButton(
+                        icon = Icons.Filled.Today,
+                        iconTint = MaterialTheme.colorScheme.secondary,
+                        title = "Today",
+                        todoCount = value,
+                        onClick = {
+                            navHostController.navigate(Screen.Today.route)
+                        }
+                    )
+                }
                 Divider(thickness = 1.dp)
                 LazyColumn(state = listState) {
                     items(listGroup) { item ->
@@ -115,11 +112,7 @@ fun HomeScreen(
                             icon = Icons.Filled.List,
                             iconTint = MaterialTheme.colorScheme.secondary,
                             title = item.groupName,
-                            todoCount = filterAndSortTask(
-                                ListType.Optional,
-                                item,
-                                TaskDummy.taskDummy
-                            ).count { task -> !task.isCompleted },
+                            todoCount = 0,
                             onClick = {
                                 navHostController.navigate(item.groupName)
                             }
