@@ -40,21 +40,21 @@ fun JustDoApp() {
         composable(route = Screen.Important.route) {
             ListScreen(
                 navHostController = navController,
-                groupName = Screen.Important.route,
+                group = Group(groupName = "Important"),
                 listType = ListType.Important
             )
         }
         composable(route = Screen.Today.route) {
             ListScreen(
                 navHostController = navController,
-                groupName = Screen.Today.route,
+                group = Group(groupName = "Today"),
                 listType = ListType.Important
             )
         }
         composable(route = Screen.All.route) {
             ListScreen(
                 navHostController = navController,
-                groupName = Screen.All.route,
+                group = Group(groupName = "All"),
                 listType = ListType.Important
             )
         }
@@ -62,7 +62,7 @@ fun JustDoApp() {
             composable(route = item.groupName) {
                 ListScreen(
                     navHostController = navController,
-                    groupName = item.groupName,
+                    group = item,
                     listType = ListType.Optional,
                 )
             }

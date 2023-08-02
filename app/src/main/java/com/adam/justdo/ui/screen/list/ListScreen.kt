@@ -31,7 +31,7 @@ import com.adam.justdo.ui.navigation.ListType
 @Composable
 fun ListScreen(
     navHostController: NavHostController,
-    groupName: String,
+    group: Group,
     listType: ListType,
     listVM: ListVM = hiltViewModel(),
 ) {
@@ -39,17 +39,14 @@ fun ListScreen(
     var listTaskCompleted by remember { mutableStateOf(emptyList<Task>()) }
     var openMoreBottomSheet by remember { mutableStateOf(false) }
     var openAddTaskDialog by remember { mutableStateOf(false) }
-    var group: Group? by remember { mutableStateOf(null) }
     val taskFlow = listVM.taskFlow.collectAsState()
-    val groupFlow = listVM.groupFlow.collectAsState()
 
     LaunchedEffect(listVM.taskFlow) {
-        if (listType != ListType.Important) {
-            listVM.getTaskByGroupName(groupName)
+        if (listType != ListType.Important && group.id != null) {
+            listVM.getTaskByGroupId(group.id)
         } else {
             listVM.getAllTasks()
         }
-        listVM.getGroupByName(groupName)
     }
 
     taskFlow.value?.let {
@@ -57,17 +54,11 @@ fun ListScreen(
         listTaskNotCompleted = it.filter { task -> !task.isCompleted }
     }
 
-    groupFlow.value?.let {
-        if (it.isNotEmpty()) {
-            group = it.first()
-        }
-    }
-
     Scaffold(
         topBar = {
             ListScreenTopBar(
                 navHostController = navHostController,
-                groupName = groupName,
+                groupName = group.groupName,
                 onClickMore = { openMoreBottomSheet = !openMoreBottomSheet },
             )
         }
@@ -83,7 +74,7 @@ fun ListScreen(
                 onImportantCheck = { id, isImportant -> listVM.updateImportant(id, isImportant) },
                 onCompletedCheck = { id, isCompleted -> listVM.updateCompleted(id, isCompleted) },
                 onSaveEditTask = { task -> listVM.upsertTask(task) },
-                onDeleteTask = { /*TODO*/ }
+                onDeleteTask = { task -> listVM.deleteTask(task) }
             )
             FloatingActionButton(
                 modifier = Modifier
@@ -100,15 +91,15 @@ fun ListScreen(
     }
     if (openMoreBottomSheet) {
         MoreActionModalBottomSheet(
-            listName = groupName,
+            listName = group.groupName,
             listType = listType,
             isListCompletedEmpty = listTaskCompleted.isEmpty(),
             onRename = {
-                listVM.renameGroup(Group(group?.id, it))
+                listVM.renameGroup(Group(group.id, it))
                 openMoreBottomSheet = false
             },
             onDeleteList = {
-                listVM.deleteGroup(Group(group?.id, groupName))
+                listVM.deleteGroup(group)
                 openMoreBottomSheet = false
                 navHostController.popBackStack()
             },
@@ -116,14 +107,26 @@ fun ListScreen(
             onDismissRequest = { openMoreBottomSheet = false }
         )
     } else if (openAddTaskDialog) {
-        CreateTaskDialog(
-            groupName = groupName,
-            onDismissRequest = { openAddTaskDialog = false },
-            onCancel = { openAddTaskDialog = false },
-            onSave = {
-                listVM.upsertTask(it)
-                openAddTaskDialog = false
-            }
-        )
+        if (group.id == null) {
+            CreateTaskDialog(
+                group = Group(null, ""),
+                onDismissRequest = { openAddTaskDialog = false },
+                onCancel = { openAddTaskDialog = false },
+                onSave = {
+                    listVM.upsertTask(it)
+                    openAddTaskDialog = false
+                }
+            )
+        } else {
+            CreateTaskDialog(
+                group = group,
+                onDismissRequest = { openAddTaskDialog = false },
+                onCancel = { openAddTaskDialog = false },
+                onSave = {
+                    listVM.upsertTask(it)
+                    openAddTaskDialog = false
+                }
+            )
+        }
     }
 }

@@ -14,13 +14,10 @@ class Repository @Inject constructor(
 ) : IRepository {
     override fun getAllTask(): Flow<List<Task>> = taskDatabase.taskDao().getAllTask()
 
-    override fun getTaskByGroupName(groupName: String): Flow<List<Task>> =
-        taskDatabase.taskDao().getTaskByGroupName(groupName)
+    override fun getTaskByGroupId(groupId: Int): Flow<List<Task>> =
+        taskDatabase.taskDao().getTaskByGroupId(groupId)
 
     override fun getAllGroup(): Flow<List<Group>> = taskDatabase.taskDao().getAllGroup()
-
-    override fun getGroupByName(groupName: String): Flow<List<Group>> =
-        taskDatabase.taskDao().getGroupByName(groupName)
 
     override suspend fun upsertTask(task: Task) = taskDatabase.taskDao().upsertTask(task)
 
@@ -32,13 +29,10 @@ class Repository @Inject constructor(
     override suspend fun updateCompleted(id: Int, isCompleted: Boolean) =
         taskDatabase.taskDao().updateCompleted(id, isCompleted)
 
-    override suspend fun deleteTask(task: Task) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteTask(task: Task) = taskDatabase.taskDao().deleteTask(task)
 
     override suspend fun deleteGroup(group: Group) {
         taskDatabase.taskDao().deleteGroup(group)
-        taskDatabase.taskDao().deleteTaskByGroupName(group.groupName)
     }
 
 }

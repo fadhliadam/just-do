@@ -11,12 +11,10 @@ class Interactor @Inject constructor(
 ) : UseCase {
     override fun getAllTask(): Flow<List<Task>> = iRepository.getAllTask()
 
-    override fun getTaskByGroupName(groupName: String): Flow<List<Task>> =
-        iRepository.getTaskByGroupName(groupName)
+    override fun getTaskByGroupId(groupId: Int): Flow<List<Task>> =
+        iRepository.getTaskByGroupId(groupId)
 
     override fun getAllGroup(): Flow<List<Group>> = iRepository.getAllGroup()
-    override fun getGroupByName(groupName: String): Flow<List<Group>> =
-        iRepository.getGroupByName(groupName)
 
     override suspend fun upsertTask(task: Task) = iRepository.upsertTask(task)
 
