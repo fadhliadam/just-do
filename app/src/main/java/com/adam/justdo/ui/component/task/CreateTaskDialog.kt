@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.util.parseDate
 import java.time.LocalDate
@@ -36,7 +37,7 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTaskDialog(
-    groupName: String,
+    group: Group,
     onDismissRequest: () -> Unit,
     onCancel: () -> Unit,
     onSave: (Task) -> Unit,
@@ -53,7 +54,7 @@ fun CreateTaskDialog(
         title = taskTitle,
         description = taskDescription,
         dueDate = parseSelectedDate,
-        groupName = groupName,
+        groupId = group.id,
         isImportant = importantTodoCheck,
         isCompleted = false,
         dateAdded = LocalDateTime.now().toString(),

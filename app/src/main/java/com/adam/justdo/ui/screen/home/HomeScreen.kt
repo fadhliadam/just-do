@@ -88,7 +88,7 @@ fun HomeScreen(
                     title = "Important",
                     todoCount = filterAndSortTask(
                         ListType.Important,
-                        "Important",
+                        Group(null, "Important"),
                         TaskDummy.taskDummy
                     ).count { task -> !task.isCompleted },
                     onClick = {
@@ -101,7 +101,7 @@ fun HomeScreen(
                     title = "Today",
                     todoCount = filterAndSortTask(
                         ListType.Important,
-                        "Today",
+                        Group(null, "Today"),
                         TaskDummy.taskDummy
                     ).count { task -> !task.isCompleted },
                     onClick = {
@@ -117,7 +117,7 @@ fun HomeScreen(
                             title = item.groupName,
                             todoCount = filterAndSortTask(
                                 ListType.Optional,
-                                item.groupName,
+                                item,
                                 TaskDummy.taskDummy
                             ).count { task -> !task.isCompleted },
                             onClick = {

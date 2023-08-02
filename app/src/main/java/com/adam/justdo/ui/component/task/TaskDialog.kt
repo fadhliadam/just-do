@@ -65,7 +65,7 @@ fun TaskDialog(
         title = taskTitle,
         description = taskDescription,
         dueDate = parseSelectedDate,
-        groupName = task.groupName,
+        groupId = task.groupId,
         isImportant = importantTodoCheck,
         isCompleted = false,
         dateAdded = task.dateAdded,

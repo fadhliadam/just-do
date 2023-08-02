@@ -19,24 +19,15 @@ class ListVM @Inject constructor(
     private val _taskFlow = MutableStateFlow<List<Task>?>(null)
     val taskFlow: StateFlow<List<Task>?> = _taskFlow
 
-    private val _groupFlow = MutableStateFlow<List<Group>?>(null)
-    val groupFlow: StateFlow<List<Group>?> = _groupFlow
-
     fun getAllTasks() = viewModelScope.launch {
         useCase.getAllTask().collect {
             _taskFlow.value = it
         }
     }
 
-    fun getTaskByGroupName(groupName: String) = viewModelScope.launch {
-        useCase.getTaskByGroupName(groupName).collect {
+    fun getTaskByGroupId(groupId: Int) = viewModelScope.launch {
+        useCase.getTaskByGroupId(groupId).collect {
             _taskFlow.value = it
-        }
-    }
-
-    fun getGroupByName(groupName: String) = viewModelScope.launch {
-        useCase.getGroupByName(groupName).collect {
-            _groupFlow.value = it
         }
     }
 
@@ -54,6 +45,10 @@ class ListVM @Inject constructor(
 
     fun renameGroup(group: Group) = viewModelScope.launch {
         useCase.upsertGroup(group)
+    }
+
+    fun deleteTask(task: Task) = viewModelScope.launch {
+        useCase.deleteTask(task)
     }
 
     fun deleteGroup(group: Group) = viewModelScope.launch {
