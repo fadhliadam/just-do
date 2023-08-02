@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.data.local.entity.Task
+import com.adam.justdo.ui.navigation.ListType
 import com.adam.justdo.util.parseDate
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -38,11 +39,14 @@ import java.time.LocalDateTime
 @Composable
 fun CreateTaskDialog(
     group: Group,
+    listType: ListType,
     onDismissRequest: () -> Unit,
     onCancel: () -> Unit,
     onSave: (Task) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val isImportant = (group.groupName == "Important" && listType == ListType.Important)
+    val isToday = (group.groupName == "Today" && listType == ListType.Important)
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     val parseSelectedDate = if (selectedDate != null) selectedDate.toString() else null
     var openCalendarDialog by remember { mutableStateOf(false) }
@@ -50,12 +54,13 @@ fun CreateTaskDialog(
     var taskTitle by remember { mutableStateOf("") }
     var taskDescription by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+
     val task = Task(
         title = taskTitle,
         description = taskDescription,
-        dueDate = parseSelectedDate,
+        dueDate = if (isToday) LocalDate.now().toString() else parseSelectedDate,
         groupId = group.id,
-        isImportant = importantTodoCheck,
+        isImportant = if (isImportant) true else importantTodoCheck,
         isCompleted = false,
         dateAdded = LocalDateTime.now().toString(),
     )
@@ -82,28 +87,32 @@ fun CreateTaskDialog(
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SetDueDateButton(
-                        modifier = Modifier.padding(end = 8.dp),
-                        selected = selectedDate != null,
-                        dateFormatted = parseDate(selectedDate),
-                        onClickTrailingIcon = { selectedDate = null },
-                        onClick = { openCalendarDialog = true },
-                    )
-                    FilterChip(
-                        selected = importantTodoCheck,
-                        label = {
-                            Text(text = "Important")
-                        },
-                        leadingIcon = {
-                            val icon =
-                                if (!importantTodoCheck) Icons.Outlined.Flag else Icons.Filled.Flag
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = "Important Toggle Task"
-                            )
-                        },
-                        onClick = { importantTodoCheck = !importantTodoCheck },
-                    )
+                    if (!isToday) {
+                        SetDueDateButton(
+                            modifier = Modifier.padding(end = 8.dp),
+                            selected = selectedDate != null,
+                            dateFormatted = parseDate(selectedDate),
+                            onClickTrailingIcon = { selectedDate = null },
+                            onClick = { openCalendarDialog = true },
+                        )
+                    }
+                    if (!isImportant) {
+                        FilterChip(
+                            selected = importantTodoCheck,
+                            label = {
+                                Text(text = "Important")
+                            },
+                            leadingIcon = {
+                                val icon =
+                                    if (!importantTodoCheck) Icons.Outlined.Flag else Icons.Filled.Flag
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = "Important Toggle Task"
+                                )
+                            },
+                            onClick = { importantTodoCheck = !importantTodoCheck },
+                        )
+                    }
                 }
                 Box(
                     modifier = Modifier
