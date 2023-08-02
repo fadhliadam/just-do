@@ -15,6 +15,8 @@ class Interactor @Inject constructor(
         iRepository.getTaskByGroupName(groupName)
 
     override fun getAllGroup(): Flow<List<Group>> = iRepository.getAllGroup()
+    override fun getGroupByName(groupName: String): Flow<List<Group>> =
+        iRepository.getGroupByName(groupName)
 
     override suspend fun upsertTask(task: Task) = iRepository.upsertTask(task)
 

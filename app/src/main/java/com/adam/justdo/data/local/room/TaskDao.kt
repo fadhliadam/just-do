@@ -18,13 +18,19 @@ interface TaskDao {
     fun getTaskByGroupName(groupName: String): Flow<List<Task>>
 
     @Query("SELECT * FROM groups")
-    fun getAllGroupName(): Flow<List<Group>>
+    fun getAllGroup(): Flow<List<Group>>
+
+    @Query("SELECT * FROM groups where group_name = :groupName")
+    fun getGroupByName(groupName: String): Flow<List<Group>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertTask(task: Task)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertGroup(group: Group)
+
+    @Query("DELETE FROM task where group_name = :groupName")
+    suspend fun deleteTaskByGroupName(groupName: String)
 
     @Delete
     suspend fun deleteTask(task: Task)

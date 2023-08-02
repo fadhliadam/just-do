@@ -14,6 +14,7 @@ import javax.inject.Inject
 class HomeVM @Inject constructor(
     private val useCase: UseCase
 ) : ViewModel() {
+
     private val _groupFlow = MutableStateFlow<List<Group>?>(null)
     val groupFlow: StateFlow<List<Group>?> = _groupFlow
 
