@@ -7,11 +7,18 @@ import kotlinx.coroutines.flow.Flow
 interface IRepository {
     fun getAllTask(): Flow<List<Task>>
     fun getTaskByGroupId(groupId: Int): Flow<List<Task>>
+    fun getTaskByImportantOrDueDate(isImportant: Int?, dueDate: String?): Flow<List<Task>>
     fun getAllGroup(): Flow<List<Group>>
     suspend fun upsertTask(task: Task)
     suspend fun upsertGroup(group: Group)
     suspend fun updateImportant(id: Int, isImportant: Boolean)
     suspend fun updateCompleted(id: Int, isCompleted: Boolean)
     suspend fun deleteTask(task: Task)
+    suspend fun deleteCompletedAllOrByGroupId(groupId: Int?)
+    suspend fun deleteCompletedImportantOrDueDate(
+        isImportant: Int?,
+        dueDate: String?
+    )
+
     suspend fun deleteGroup(group: Group)
 }

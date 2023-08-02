@@ -16,6 +16,9 @@ interface TaskDao {
     @Query("SELECT * FROM task where group_id = :groupId")
     fun getTaskByGroupId(groupId: Int): Flow<List<Task>>
 
+    @Query("SELECT * FROM task where is_important = :isImportant OR due_date = :dueDate")
+    fun getTaskByImportantOrDueDate(isImportant: Int?, dueDate: String?): Flow<List<Task>>
+
     @Query("SELECT * FROM groups")
     fun getAllGroup(): Flow<List<Group>>
 
@@ -31,11 +34,23 @@ interface TaskDao {
     @Query("UPDATE task SET is_completed=:isCompleted WHERE id = :id")
     suspend fun updateCompleted(id: Int, isCompleted: Boolean)
 
-    @Query("DELETE FROM task where group_id = :groupId")
-    suspend fun deleteTaskByGroupId(groupId: Int)
-
     @Delete
     suspend fun deleteTask(task: Task)
+
+    @Query("DELETE FROM task WHERE group_id = :groupId")
+    suspend fun deleteTaskByGroupId(groupId: Int)
+
+    @Query("DELETE FROM task WHERE group_id = :groupId OR is_completed = 1")
+    suspend fun deleteCompletedAllOrByGroupId(groupId: Int? = null)
+
+    @Query(
+        "DELETE FROM task WHERE is_completed = 1 " +
+                "AND (is_important = :isImportant OR due_date = :dueDate)"
+    )
+    suspend fun deleteCompletedImportantOrDueDate(
+        isImportant: Int?,
+        dueDate: String?
+    )
 
     @Delete
     suspend fun deleteGroup(group: Group)

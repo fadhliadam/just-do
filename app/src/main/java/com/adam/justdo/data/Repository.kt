@@ -17,6 +17,12 @@ class Repository @Inject constructor(
     override fun getTaskByGroupId(groupId: Int): Flow<List<Task>> =
         taskDatabase.taskDao().getTaskByGroupId(groupId)
 
+    override fun getTaskByImportantOrDueDate(
+        isImportant: Int?,
+        dueDate: String?
+    ): Flow<List<Task>> =
+        taskDatabase.taskDao().getTaskByImportantOrDueDate(isImportant, dueDate)
+
     override fun getAllGroup(): Flow<List<Group>> = taskDatabase.taskDao().getAllGroup()
 
     override suspend fun upsertTask(task: Task) = taskDatabase.taskDao().upsertTask(task)
@@ -30,6 +36,11 @@ class Repository @Inject constructor(
         taskDatabase.taskDao().updateCompleted(id, isCompleted)
 
     override suspend fun deleteTask(task: Task) = taskDatabase.taskDao().deleteTask(task)
+    override suspend fun deleteCompletedAllOrByGroupId(groupId: Int?) =
+        taskDatabase.taskDao().deleteCompletedAllOrByGroupId(groupId)
+
+    override suspend fun deleteCompletedImportantOrDueDate(isImportant: Int?, dueDate: String?) =
+        taskDatabase.taskDao().deleteCompletedImportantOrDueDate(isImportant, dueDate)
 
     override suspend fun deleteGroup(group: Group) {
         taskDatabase.taskDao().deleteGroup(group)

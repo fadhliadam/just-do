@@ -14,6 +14,12 @@ class Interactor @Inject constructor(
     override fun getTaskByGroupId(groupId: Int): Flow<List<Task>> =
         iRepository.getTaskByGroupId(groupId)
 
+    override fun getTaskByImportantOrDueDate(
+        isImportant: Int?,
+        dueDate: String?
+    ): Flow<List<Task>> =
+        iRepository.getTaskByImportantOrDueDate(isImportant, dueDate)
+
     override fun getAllGroup(): Flow<List<Group>> = iRepository.getAllGroup()
 
     override suspend fun upsertTask(task: Task) = iRepository.upsertTask(task)
@@ -25,6 +31,12 @@ class Interactor @Inject constructor(
 
     override suspend fun updateCompleted(id: Int, isCompleted: Boolean) =
         iRepository.updateCompleted(id, isCompleted)
+
+    override suspend fun deleteCompletedAllOrByGroupId(groupId: Int?) =
+        iRepository.deleteCompletedAllOrByGroupId(groupId)
+
+    override suspend fun deleteCompletedImportantOrDueDate(isImportant: Int?, dueDate: String?) =
+        iRepository.deleteCompletedImportantOrDueDate(isImportant, dueDate)
 
     override suspend fun deleteTask(task: Task) = iRepository.deleteTask(task)
 
