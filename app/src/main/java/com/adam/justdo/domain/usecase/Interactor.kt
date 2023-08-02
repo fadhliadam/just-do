@@ -1,5 +1,6 @@
 package com.adam.justdo.domain.usecase
 
+import com.adam.justdo.data.local.entity.Count
 import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.domain.repository.IRepository
@@ -21,6 +22,7 @@ class Interactor @Inject constructor(
         iRepository.getTaskByImportantOrDueDate(isImportant, dueDate)
 
     override fun getAllGroup(): Flow<List<Group>> = iRepository.getAllGroup()
+    override fun getCount(): Flow<Count> = iRepository.getCount()
 
     override suspend fun upsertTask(task: Task) = iRepository.upsertTask(task)
 

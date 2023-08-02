@@ -1,5 +1,6 @@
 package com.adam.justdo.data
 
+import com.adam.justdo.data.local.entity.Count
 import com.adam.justdo.data.local.entity.Group
 import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.data.local.room.TaskDatabase
@@ -24,6 +25,7 @@ class Repository @Inject constructor(
         taskDatabase.taskDao().getTaskByImportantOrDueDate(isImportant, dueDate)
 
     override fun getAllGroup(): Flow<List<Group>> = taskDatabase.taskDao().getAllGroup()
+    override fun getCount(): Flow<Count> = taskDatabase.taskDao().getCount()
 
     override suspend fun upsertTask(task: Task) = taskDatabase.taskDao().upsertTask(task)
 

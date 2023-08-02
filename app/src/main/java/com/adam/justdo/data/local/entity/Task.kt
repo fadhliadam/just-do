@@ -22,7 +22,7 @@ data class Task(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "due_date") val dueDate: String?,
-    @ColumnInfo(name = "group_id") val groupId: Int? = null,
+    @ColumnInfo(name = "group_id", index = true) val groupId: Int? = null,
     @ColumnInfo(name = "is_important") val isImportant: Boolean,
     @ColumnInfo(name = "is_completed") val isCompleted: Boolean,
     @ColumnInfo(name = "date_added") val dateAdded: String = LocalDateTime.now().toString(),
