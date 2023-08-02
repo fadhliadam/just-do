@@ -109,7 +109,8 @@ fun ListScreen(
     } else if (openAddTaskDialog) {
         if (group.id == null) {
             CreateTaskDialog(
-                group = Group(null, ""),
+                group = group,
+                listType = listType,
                 onDismissRequest = { openAddTaskDialog = false },
                 onCancel = { openAddTaskDialog = false },
                 onSave = {
@@ -120,6 +121,7 @@ fun ListScreen(
         } else {
             CreateTaskDialog(
                 group = group,
+                listType = listType,
                 onDismissRequest = { openAddTaskDialog = false },
                 onCancel = { openAddTaskDialog = false },
                 onSave = {
