@@ -31,10 +31,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.adam.justdo.domain.model.Task
+import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.ui.theme.Red40
 import com.adam.justdo.util.parseDate
-import java.sql.Date
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,8 +53,7 @@ fun TaskDialog(
             ) else null
         )
     }
-    val parseSelectedDate =
-        if (selectedDate != null) Date.valueOf(selectedDate.toString()) else null
+    val parseSelectedDate = if (selectedDate != null) selectedDate.toString() else null
     var openCalendarDialog by remember { mutableStateOf(false) }
     var importantTodoCheck by remember { mutableStateOf(task.isImportant) }
     var taskTitle by remember { mutableStateOf(task.title) }
@@ -63,12 +61,13 @@ fun TaskDialog(
     val focusRequester = remember { FocusRequester() }
 
     val editedTask = Task(
+        id = 0,
         title = taskTitle,
         description = taskDescription,
         dueDate = parseSelectedDate,
-        listGroup = task.listGroup,
-        isCompleted = false,
+        groupName = task.groupName,
         isImportant = importantTodoCheck,
+        isCompleted = false,
         dateAdded = task.dateAdded,
     )
 

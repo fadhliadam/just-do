@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.adam.justdo.R
-import com.adam.justdo.domain.model.Task
+import com.adam.justdo.data.local.entity.Task
 import com.adam.justdo.ui.component.TodoItemCard
 import com.adam.justdo.ui.component.task.TaskDialog
 

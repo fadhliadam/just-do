@@ -2,7 +2,7 @@ package com.adam.justdo.di
 
 import android.content.Context
 import androidx.room.Room
-import com.adam.justdo.data.local.room.AppDatabase
+import com.adam.justdo.data.local.room.TaskDatabase
 import com.adam.justdo.data.local.room.TaskDao
 import dagger.Module
 import dagger.Provides
@@ -16,14 +16,14 @@ import javax.inject.Singleton
 class DatabaseModule {
 
     @Provides
-    fun provideTaskDao(taskDatabase: AppDatabase): TaskDao = taskDatabase.taskDao()
+    fun provideTaskDao(taskDatabase: TaskDatabase): TaskDao = taskDatabase.taskDao()
 
     @Provides
     @Singleton
-    fun provideTaskDatabase(@ApplicationContext context: Context): AppDatabase {
+    fun provideTaskDatabase(@ApplicationContext context: Context): TaskDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            AppDatabase::class.java,
+            TaskDatabase::class.java,
             "task_database"
         ).build()
     }

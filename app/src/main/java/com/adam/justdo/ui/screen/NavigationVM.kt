@@ -1,4 +1,4 @@
-package com.adam.justdo.ui.screen.home
+package com.adam.justdo.ui.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,9 +11,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeVM @Inject constructor(
+class NavigationVM @Inject constructor(
     private val useCase: UseCase
 ) : ViewModel() {
+
     private val _groupFlow = MutableStateFlow<List<Group>?>(null)
     val groupFlow: StateFlow<List<Group>?> = _groupFlow
 
@@ -21,9 +22,5 @@ class HomeVM @Inject constructor(
         useCase.getAllGroup().collect {
             _groupFlow.value = it
         }
-    }
-
-    fun upsertGroup(groupName: Group) = viewModelScope.launch {
-        useCase.upsertGroup(groupName)
     }
 }
