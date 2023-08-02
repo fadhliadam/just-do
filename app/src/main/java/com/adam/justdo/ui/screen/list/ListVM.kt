@@ -40,6 +40,18 @@ class ListVM @Inject constructor(
         }
     }
 
+    fun upsertTask(task: Task) = viewModelScope.launch {
+        useCase.upsertTask(task)
+    }
+
+    fun updateImportant(id: Int, isImportant: Boolean) = viewModelScope.launch {
+        useCase.updateImportant(id, isImportant)
+    }
+
+    fun updateCompleted(id: Int, isCompleted: Boolean) = viewModelScope.launch {
+        useCase.updateCompleted(id, isCompleted)
+    }
+
     fun renameGroup(group: Group) = viewModelScope.launch {
         useCase.upsertGroup(group)
     }

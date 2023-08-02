@@ -61,7 +61,7 @@ fun TaskDialog(
     val focusRequester = remember { FocusRequester() }
 
     val editedTask = Task(
-        id = 0,
+        id = task.id,
         title = taskTitle,
         description = taskDescription,
         dueDate = parseSelectedDate,
@@ -86,7 +86,7 @@ fun TaskDialog(
                     taskDescription = taskDescription,
                     onNoteChange = { taskDescription = it },
                     onDone = {
-                        onSave(editedTask)
+                        onSave(it)
                         onDismissRequest()
                     }
                 )

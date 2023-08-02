@@ -26,6 +26,12 @@ class Repository @Inject constructor(
 
     override suspend fun upsertGroup(group: Group) = taskDatabase.taskDao().upsertGroup(group)
 
+    override suspend fun updateImportant(id: Int, isImportant: Boolean) =
+        taskDatabase.taskDao().updateImportant(id, isImportant)
+
+    override suspend fun updateCompleted(id: Int, isCompleted: Boolean) =
+        taskDatabase.taskDao().updateCompleted(id, isCompleted)
+
     override suspend fun deleteTask(task: Task) {
         TODO("Not yet implemented")
     }

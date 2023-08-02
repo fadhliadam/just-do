@@ -22,6 +22,12 @@ class Interactor @Inject constructor(
 
     override suspend fun upsertGroup(group: Group) = iRepository.upsertGroup(group)
 
+    override suspend fun updateImportant(id: Int, isImportant: Boolean) =
+        iRepository.updateImportant(id, isImportant)
+
+    override suspend fun updateCompleted(id: Int, isCompleted: Boolean) =
+        iRepository.updateCompleted(id, isCompleted)
+
     override suspend fun deleteTask(task: Task) = iRepository.deleteTask(task)
 
     override suspend fun deleteGroup(group: Group) = iRepository.deleteGroup(group)

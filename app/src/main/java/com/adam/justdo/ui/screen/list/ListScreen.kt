@@ -35,7 +35,10 @@ fun ListScreen(
     listType: ListType,
     listVM: ListVM = hiltViewModel(),
 ) {
-    var listTask by remember { mutableStateOf(emptyList<Task>()) }
+    var listTaskNotCompleted by remember { mutableStateOf(emptyList<Task>()) }
+    var listTaskCompleted by remember { mutableStateOf(emptyList<Task>()) }
+    var openMoreBottomSheet by remember { mutableStateOf(false) }
+    var openAddTaskDialog by remember { mutableStateOf(false) }
     var group: Group? by remember { mutableStateOf(null) }
     val taskFlow = listVM.taskFlow.collectAsState()
     val groupFlow = listVM.groupFlow.collectAsState()
@@ -50,7 +53,8 @@ fun ListScreen(
     }
 
     taskFlow.value?.let {
-        listTask = it
+        listTaskCompleted = it.filter { task -> task.isCompleted }
+        listTaskNotCompleted = it.filter { task -> !task.isCompleted }
     }
 
     groupFlow.value?.let {
@@ -59,9 +63,6 @@ fun ListScreen(
         }
     }
 
-    val listTaskCompleted = listTask.filter { it.isCompleted }
-    var openMoreBottomSheet by remember { mutableStateOf(false) }
-    var openAddTaskDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             ListScreenTopBar(
@@ -77,9 +78,11 @@ fun ListScreen(
                 .fillMaxSize()
         ) {
             LazyListTasks(
-                listTaskNotCompleted = listTask.filter { item -> !item.isCompleted },
+                listTaskNotCompleted = listTaskNotCompleted,
                 listTaskCompleted = listTaskCompleted,
-                onSaveEditTask = { /*TODO*/ },
+                onImportantCheck = { id, isImportant -> listVM.updateImportant(id, isImportant) },
+                onCompletedCheck = { id, isCompleted -> listVM.updateCompleted(id, isCompleted) },
+                onSaveEditTask = { task -> listVM.upsertTask(task) },
                 onDeleteTask = { /*TODO*/ }
             )
             FloatingActionButton(
@@ -114,10 +117,13 @@ fun ListScreen(
         )
     } else if (openAddTaskDialog) {
         CreateTaskDialog(
-            listName = groupName,
+            groupName = groupName,
             onDismissRequest = { openAddTaskDialog = false },
             onCancel = { openAddTaskDialog = false },
-            onSave = { openAddTaskDialog = false }
+            onSave = {
+                listVM.upsertTask(it)
+                openAddTaskDialog = false
+            }
         )
     }
 }

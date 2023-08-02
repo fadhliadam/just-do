@@ -11,6 +11,8 @@ interface IRepository {
     fun getGroupByName(groupName: String): Flow<List<Group>>
     suspend fun upsertTask(task: Task)
     suspend fun upsertGroup(group: Group)
+    suspend fun updateImportant(id: Int, isImportant: Boolean)
+    suspend fun updateCompleted(id: Int, isCompleted: Boolean)
     suspend fun deleteTask(task: Task)
     suspend fun deleteGroup(group: Group)
 }
